@@ -3,8 +3,11 @@ from django.db import models
 # Create your models here.
 class User(models.Model):
     firstname = models.CharField(max_length= 255)
-    lastname = models.CharField(max_length=5)
+    lastname = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
     email = models.CharField(max_length=15)
+    password = models.CharField(max_length=25)
+    password2 = models.CharField(max_length=25)
     #gender = models.CharField(type= bool)
     address = models.TextField(max_length=255)
     phone_number = models.CharField(max_length= 25)
