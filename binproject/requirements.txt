@@ -1,0 +1,5 @@
+djangorestframework
+python-dotenv
+psycopg
+# psycopg2-binary
+djangorestframework-simplejwt
