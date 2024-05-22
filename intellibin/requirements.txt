@@ -3,3 +3,4 @@ python-dotenv
 psycopg
 # psycopg2-binary
 djangorestframework-simplejwt
+django-cors-headers 

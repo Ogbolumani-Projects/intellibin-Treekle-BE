@@ -1,5 +1,5 @@
 """
-WSGI config for binproject project.
+WSGI config for intellibin project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'binproject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'intellibin.settings')
 
 application = get_wsgi_application()
