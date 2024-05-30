@@ -80,6 +80,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'intellibin.wsgi.application'
 
 AUTH_USER_MODEL = 'authservice.CustomUser'
+DEFAULT_AUTO_FIELD ="django.db.models.BigAutoField"
 
 
 # Database
@@ -119,7 +120,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
@@ -148,3 +149,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'the.ayoadeborah@gmail.com'
+EMAIL_HOST_PASSWORD = 'cedzkqdfnysjewth'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

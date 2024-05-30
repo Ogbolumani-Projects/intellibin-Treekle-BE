@@ -1,12 +1,29 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from .models import CustomUser
+from django.contrib.auth import get_user_model, authenticate
+import random
 from rest_framework.validators import ValidationError, UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-#from .models import CustomUserManager, UserProfile
-from django.contrib.auth import get_user_model, authenticate
 
 User = get_user_model()
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password', 'otp')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        user.otp = random.randint(100000, 999999)
+        user.save()
+        # Here you would typically send the OTP via email/SMS
+        return user
+    
 class UserRegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
@@ -37,48 +54,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
         return user
 
-# class UserRegisterSerializer(serializers.ModelSerializer):
-#     confirm_password = serializers.CharField(write_only= True)
-#     email = serializers.EmailField(
-#         required=True,
-#         validators=[UniqueValidator(queryset=User.objects.all())]
-#     )
-#     password = serializers.CharField(
-#         write_only=True, required=True, validators=[validate_password])
-
-#     class Meta:
-#         model = User
-#         fields = ('email', 'password', 'confirm_password', 'phone_number', 'first_name', 'last_name', 'address')
-#         extra_kwargs = { 'password': {'write_only': True},
-#                          'confirm_password':{'write_only': True}
-#         }
-    
-#     def validate(self, attrs):
-#         if attrs['password'] != attrs['confirm_password']:
-#             raise serializers.ValidationError(
-#             {"password": "Password fields didn't match."})
-#         try:
-#             validate_password(attrs['password'])
-#         except ValidationError as err:
-#             raise serializers.ValidationError(
-#             {"password": err.messages})
-#         return attrs
-
-#     def create(self, validated_data):
-#         new_user = User.objects.create(
-#             email = validated_data['email'],
-#         )
-#         new_profile = UserProfile.objects.create(user = new_user)
-#         new_user.set_password(validated_data['password'])
-#         new_user.save()
-
-#         return new_user
-
-# class UserLoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUserManager
-#         fields = ('email', 'password')
-
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -91,3 +66,9 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Invalid login credentials')
         data['user'] = user
         return data
+    
+class OTPVerifySerializer(serializers.Serializer):
+    otp_code = serializers.CharField(max_length=6)
+
+class ResendOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
