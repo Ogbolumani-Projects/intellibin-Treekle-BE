@@ -1,15 +1,15 @@
 # from .forms import RegisterForm
-from django.contrib.auth import login, authenticate, logout, get_user_model
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from .models import OtpToken
 from rest_framework_simplejwt.tokens import RefreshToken
-
+import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from django.contrib.auth import login
 from .serializers import UserRegisterSerializer, LoginSerializer, OTPVerifySerializer, ResendOTPSerializer
 from .utils import create_token
 #create views
@@ -18,7 +18,7 @@ User = get_user_model()
 class RegisterView(APIView):
 
     def post(self, request):
-        serializer = UserRegisterSerializer()
+        serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
