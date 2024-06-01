@@ -1,12 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 
-from django.conf import settings
-import secrets
 
-class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
+class CustomUser(AbstractBaseUser ,PermissionsMixin):
+    full_name = models.CharField(max_length= 255, default= 'Anyname')
+    email = models.EmailField(
+        verbose_name="email address",
+        max_length= 255,
+        unique=True,
+        )
+    verified = models.BooleanField(default=False)
+    phone_number = models.IntegerField(default= '12345')
+    password = models.CharField(max_length=255,default='defaultpassword')
+    address = models.TextField(null= True)
+    is_active = models.BooleanField(default= True)
 
     USERNAME_FIELD = ("email")
     REQUIRED_FIELDS = ["username"]
@@ -14,12 +23,3 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
     
-
-class OtpToken(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="otps")
-    otp_code = models.CharField(max_length=6, default=secrets.token_hex(3))
-    otp_created_at = models.DateTimeField(auto_now_add=True)
-    otp_expires_at = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return self.user.username
