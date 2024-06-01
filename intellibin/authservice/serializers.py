@@ -63,8 +63,10 @@ class UserLoginSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
-# class OTPVerifySerializer(serializers.Serializer):
-#     otp_code = serializers.CharField(max_length=6)
 
-# class ResendOTPSerializer(serializers.Serializer):
-#     email = serializers.EmailField()
+class ConfirmOTPSerializer(serializers.Serializer):
+    otp = serializers.CharField()
+    email = serializers.EmailField()
+
+class ResendOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
