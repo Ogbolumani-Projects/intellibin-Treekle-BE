@@ -47,11 +47,7 @@ INSTALLED_APPS = [
     'authservice',
     'rest_framework',
     'rest_framework.authtoken',
-
-    'django_otp',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_hotp',
-    'django_otp.plugins.otp_static',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +58,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'intellibin.urls'
@@ -124,14 +119,13 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend', #default for admin site
+    'authservice.backends.EmailPhoneNumberBackend',
 ]
 
 # Internationalization

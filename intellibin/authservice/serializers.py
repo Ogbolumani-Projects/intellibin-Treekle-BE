@@ -1,43 +1,43 @@
 from rest_framework import serializers
-from .models import CustomUser
-from rest_framework.validators import ValidationError, UniqueValidator
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth import authenticate
+from .models import *
+from rest_framework.exceptions import ValidationError
+from rest_framework import status
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObtainPairSerializer
-
 import secrets
-import random
+
 import time
+import random
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(write_only= True)
+    confirm_password = serializers.CharField(write_only=True)
     class Meta:
-        model = CustomUser
-        fields = ('full_name','email','password', 'confirm_password')
+        model = CustomUser  
+        fields=("email", "password", "confirm_password","phone_number")
         extra_kwargs = {'password': {'write_only': True}, # key word argument
                         "confirm_password":{'write_only':True}}
-    
-        def validate(self, attrs):
-            if attrs['password'] != attrs['confirm_password']:
-                raise serializers.ValidationError(
-                {"password": "Password fields didn't match."})
+        
+    def validate(self, attrs):
+        if attrs['password'] != attrs['confirm_password']:
+            raise serializers.ValidationError(
+            {"password": "Password fields didn't match."})
        
-            try:
-                validate_password(attrs['password'])
-            except ValidationError as err:
-                raise serializers.ValidationError(
-                {"password": err.messages})
-            return attrs
-
-        def createUser(self, validated_data):
-            user = CustomUser.objects.create(
-                email=validated_data['email'],
-            )
-            user.set_password(validated_data['password'])
-            user.save()
-            return user
-
+        try:
+            validate_password(attrs['password'])
+        except ValidationError as err:
+            raise serializers.ValidationError(
+            {"password": err.messages})
+        return attrs
+    def create(self, validated_data):
+        
+        new_user = CustomUser.objects.create(
+            email = validated_data['email'],
+        )
+        new_profile = UserProfile.objects.create(user=new_user)
+        new_user.set_password(validated_data['password'])
+        new_user.save()
+        return new_user
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(
@@ -64,9 +64,12 @@ class UserLoginSerializer(serializers.Serializer):
         return attrs
 
 
+
 class ConfirmOTPSerializer(serializers.Serializer):
+
     otp = serializers.CharField()
     email = serializers.EmailField()
+
 
 class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()

@@ -3,21 +3,26 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from .models import *
-#create views
+
+# Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
+
+# serilaizer
 from .serializers import *
+
 from .utils import *
 
 class UserRegisterAPIView(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kargs):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()        
-            send_otp= send_mail_to_user(serializer.data['email'])
+            serializer.save()
+            
+            send_otp = send_mail_to_user(serializer.data['email'])
             
             response = {
                 'success': True,
@@ -79,9 +84,22 @@ def confirm_otp(request):
             verified_user.verified = True
             verified_user.save()
 
+    
         if confirm_otp_code:
             return Response("You are now verified")
         else:
             return Response(
                 "Otp expired or incorrect"
             )
+
+
+class UserDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = CustomUser.objects.all()
+    def get(self, request):
+        print(request.user)
+        user = CustomUser.objects.get(email=request.user.email)
+
+        return Response(
+            user.email
+        )
