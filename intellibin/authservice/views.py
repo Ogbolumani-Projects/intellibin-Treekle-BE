@@ -70,6 +70,29 @@ def resend_otp_token(request, *args, **kwargs):
         return Response("wrong email")
     return Response(serializers.errors)
 
+# @api_view(["POST"])
+# def confirm_otp(request):
+
+#     serializer = ConfirmOTPSerializer(data = request.data)
+
+#     if serializer.is_valid():
+
+#         confirm_otp_code = totp.verify(serializer.data['otp'])
+
+#         if confirm_otp_code:
+#             verified_user = CustomUser.objects.get(email=serializer.data['email'])
+#             verified_user.verified = True
+#             verified_user.save()
+
+    
+#         if confirm_otp_code:
+#             return Response("You are now verified")
+#         else:
+#             return Response(
+#                 "Otp expired or incorrect"
+#             )
+
+
 @api_view(["POST"])
 def confirm_otp(request):
 
@@ -85,13 +108,12 @@ def confirm_otp(request):
             verified_user.save()
 
     
-        if confirm_otp_code:
             return Response("You are now verified")
         else:
             return Response(
                 "Otp expired or incorrect"
             )
-
+    return Response(serializer.errors)
 
 class UserDetails(APIView):
     permission_classes = (IsAuthenticated,)

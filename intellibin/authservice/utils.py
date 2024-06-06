@@ -1,7 +1,7 @@
 from pyotp import TOTP
 from django.core.mail import send_mail
 
-totp = TOTP('base32secret3232', interval=120)
+totp = TOTP('base32secret3232', interval=300)
 
 
 def generate_otp():
