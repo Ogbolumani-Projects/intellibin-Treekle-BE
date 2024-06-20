@@ -27,6 +27,25 @@ class wasteBin(models.Model):
     picked_up = models.BooleanField(default=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
 
+    def reward_points_sum_bin_count(self):
+        
+        return wasteBin.objects.filter(user=self.user).aggregate(
+            Sum("reward_points"), Count('id')
+        )
+
+    def full_bins(self):
+        return wasteBin.objects.filter(user=self.user, bin_level__gt=50).count()
+    
+    def half_bins(self):
+        return wasteBin.objects.filter(user=self.user, bin_level=50).count()
+
+
+    def spacious_bins(self):
+        return wasteBin.objects.filter(user=self.user, bin_level__lt=45).count()
+    
+
+    
+
 class WastePickUp(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     type_of_waste = models.ForeignKey(wasteCategory, on_delete=models.CASCADE)

@@ -48,11 +48,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken', 
     'rest_framework_simplejwt',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.security.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

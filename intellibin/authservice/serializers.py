@@ -66,10 +66,22 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class ConfirmOTPSerializer(serializers.Serializer):
-
     otp = serializers.CharField()
     email = serializers.EmailField()
 
 
 class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
+
+class UpdateUserProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+
+    def validate(self, attrs):
+        if 'phone_number' in attrs.keys() or 'email' in attrs.keys():
+            raise serializers.ValidationError(
+            {"error": "You cannot update your phone number or email address "})
+        return attrs 

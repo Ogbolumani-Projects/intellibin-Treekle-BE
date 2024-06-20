@@ -48,3 +48,29 @@ class DashBoardView(APIView):
     
     def post(self, request):
         pass
+
+class WasteBinPickupView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        serializers = WastePickRequestSerializer(data=request.data)
+       
+        if serializers.is_valid():
+            waste_type =  wasteCategory.objects.get(name=serializers.data['type_of_waste'])
+            print(waste_type)
+            pickup = WastePickUp.objects.create(
+                user = request.user,
+                type_of_waste = waste_type,
+                pending=True
+            ).save()
+
+            return Response(
+                "Request Successful", status=status.HTTP_201_CREATED
+            )
+    
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class WasteBinUpdateView(generics.UpdateAPIView):
+
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+    pass

@@ -13,5 +13,5 @@ urlpatterns = [
     path('register/',UserRegisterAPIView.as_view(), name='login'),
     path("resend_otp/", resend_otp_token, name='resend_otp'),
     path("confirm_otp/", confirm_otp, name='confirm_otp'),
-    path("user_details/", UserDetails.as_view())
+    path("user_profile/", UserProfileAPIView.as_view(), name='user_profile')
 ]
