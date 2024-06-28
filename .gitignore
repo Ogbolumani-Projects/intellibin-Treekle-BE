@@ -1,4 +1,5 @@
 .env
+
 # gitignore for django projects
 __pycache__/
 *.py[cod]
@@ -44,6 +45,9 @@ coverage.xml
 
 # VirtualEnv
 .venv/
+venv/
+
+
 
 # Developers
 *.sw*
