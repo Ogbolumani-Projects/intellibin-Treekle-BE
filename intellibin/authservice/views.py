@@ -104,7 +104,7 @@ class UserProfileAPIView(APIView):
         return Response(
             {
             'email':user.email,
-            'firstname': user.firstname,
+            'full_name': user.full_name,
             'phone_number': user.phone_number
             }
         )
@@ -123,3 +123,7 @@ class UserProfileAPIView(APIView):
         return Response(
             serializers.errors
         ) 
+    
+
+# class UserPasswordResetAPIView(APIView):
+    
