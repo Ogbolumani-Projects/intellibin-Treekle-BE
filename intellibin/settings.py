@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', 
     'rest_framework_simplejwt',
     'dashboard',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -130,6 +131,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -171,3 +173,11 @@ EMAIL_HOST_USER = 'the.ayoadeborah@gmail.com'
 EMAIL_HOST_PASSWORD = 'cmmo brmt iowh iwza'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Intellibin Project',
+    'DESCRIPTION': 'A waste management project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
