@@ -18,7 +18,7 @@ from django.http.response import HttpResponse
 
 
 class DashBoardView(APIView):
-
+    queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
     
     def get(self, request):
@@ -50,6 +50,7 @@ class DashBoardView(APIView):
         pass
 
 class WasteBinPickupView(APIView):
+    queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
     def post(self, request):
         serializers = WastePickRequestSerializer(data=request.data)

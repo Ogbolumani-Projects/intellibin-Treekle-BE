@@ -17,6 +17,9 @@ from .serializers import *
 from .utils import *
 
 class UserRegisterAPIView(APIView):
+    queryset = CustomUser
+    serializer_class = UserRegisterSerializer
+
     def post(self, request, *args, **kargs):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -33,6 +36,8 @@ class UserRegisterAPIView(APIView):
             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
     
 class UserLoginAPIView(APIView):
+    queryset = CustomUser
+    serializer_class = UserLoginSerializer
     def post(self, request, *args, **kargs):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -94,7 +99,7 @@ def confirm_otp(request):
     return Response(serializer.errors)
 
 class UserProfileAPIView(APIView):
-
+    queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
     queryset = CustomUser.objects.all()
     def get(self, request):

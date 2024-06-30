@@ -9,4 +9,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 python manage.py spectacular --color --file schema.yml
-python manage.py createsuperuser date_of_birth=2020-01-01 --no-input 
+python manage.py createsuperuser --no-input 
