@@ -5,8 +5,9 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObtainPairSerializer
-import secrets
+from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer
 
+import secrets
 import time
 import random
 
@@ -86,21 +87,21 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
             {"error": "You cannot update your phone number or email address "})
         return attrs 
     
-class ChangePasswordSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=255, write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
-    class Meta:
-        fields = ['password', 'confirm_password']
+# class ChangePasswordSerializer(serializers.ModelSerializer):
+#     password = serializers.CharField(max_length=255, write_only=True)
+#     confirm_password = serializers.CharField(write_only=True)
+#     class Meta:
+#         fields = ['password', 'confirm_password']
 
-    def validate(self, attrs):
-        password = attrs.get('password')
-        confirm_password = attrs.get('confirm_password')
-        user = self.context.get('user')
-        if password != confirm_password:
-            raise serializers.ValidationError("Password and Confirm Password doesn't match")
-        user.set_password(password)
-        user.save()
-        return attrs
+#     def validate(self, attrs):
+#         password = attrs.get('password')
+#         confirm_password = attrs.get('confirm_password')
+#         user = self.context.get('user')
+#         if password != confirm_password:
+#             raise serializers.ValidationError("Password and Confirm Password doesn't match")
+#         user.set_password(password)
+#         user.save()
+#         return attrs
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField()
@@ -140,10 +141,10 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 #     else:
 #       raise serializers.ValidationError('You are not a Registered User')
 
-class UserPasswordResetSerializer(serializers.Serializer):
-  password = serializers.CharField(max_length=255, write_only=True)
-  confirm_password = serializers.CharField(max_length=255, write_only=True)
-  class Meta:
-    fields = ['password', 'confirm_password']
+# class UserPasswordResetSerializer(serializers.Serializer):
+#   password = serializers.CharField(max_length=255, write_only=True)
+#   confirm_password = serializers.CharField(max_length=255, write_only=True)
+#   class Meta:
+#     fields = ['password', 'confirm_password']
 
      

@@ -17,13 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('authservice.urls')),
     path('user/', include('dashboard.urls')),
-    path('accounts/', include('dj_rest_auth.urls')),
+    #path('accounts/', include('dj_rest_auth.urls')),
+    path('accounts/', PasswordChangeView.as_view(), name='change_password'),
+    path('accounts/', PasswordResetView.as_view(), name='password_reset'),
+    path('accounts/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('accounts/', LogoutView.as_view(), name='logout'),
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
