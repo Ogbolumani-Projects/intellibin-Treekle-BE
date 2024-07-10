@@ -11,12 +11,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
-#from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+
 from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
 from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
 
-
-# serilaizer
 from .serializers import *
 
 from .utils import *
@@ -133,8 +131,6 @@ class UserProfileAPIView(APIView):
         return Response(
             serializers.errors
         ) 
-    
-# class UserPasswordResetAPIView(APIView):
 
 class PasswordChangeAPIView(PasswordChangeView):
     """

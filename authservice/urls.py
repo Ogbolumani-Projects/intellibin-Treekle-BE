@@ -5,9 +5,6 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from .views import *
-from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
-
-
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

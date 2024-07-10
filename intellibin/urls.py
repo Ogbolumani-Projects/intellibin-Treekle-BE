@@ -24,10 +24,7 @@ urlpatterns = [
     path('api/', include('authservice.urls')),
     path('user/', include('dashboard.urls')),
     #path('accounts/', include('dj_rest_auth.urls')),
-    # path('accounts/', PasswordChangeView.as_view(), name='change_password'),
-    # path('accounts/', PasswordResetView.as_view(), name='password_reset'),
-    # path('accounts/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    # path('accounts/', LogoutView.as_view(), name='logout'),
+    
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
