@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('authservice.urls')),
+    path('user/', include('dashboard.urls')),
+    path('accounts/', include('dj_rest_auth.urls')),
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:

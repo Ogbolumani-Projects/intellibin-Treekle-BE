@@ -101,7 +101,17 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return attrs
-    
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()    
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    new_password = serializers.CharField()
 
 # class SendPasswordResetEmailSerializer(serializers.Serializer):
 #   email = serializers.EmailField(max_length=255)
@@ -131,9 +141,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 #       raise serializers.ValidationError('You are not a Registered User')
 
 class UserPasswordResetSerializer(serializers.Serializer):
-  password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-  password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+  password = serializers.CharField(max_length=255, write_only=True)
+  confirm_password = serializers.CharField(max_length=255, write_only=True)
   class Meta:
-    fields = ['password', 'password2']
+    fields = ['password', 'confirm_password']
 
      

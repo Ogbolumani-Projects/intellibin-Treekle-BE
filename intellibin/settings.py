@@ -48,9 +48,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken', 
     'rest_framework_simplejwt',
+    'dj_rest_auth',
     'dashboard',
     'drf_spectacular',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,6 +137,17 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+REST_AUTH = {
+    'PASSWORD_RESET_SERIALIZER': 'dj_rest_auth.serializers.PasswordResetSerializer',
+    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'dj_rest_auth.serializers.PasswordResetConfirmSerializer',
+    'PASSWORD_CHANGE_SERIALIZER': 'dj_rest_auth.serializers.PasswordChangeSerializer',
+
+    'PASSWORD_RESET_USE_SITES_DOMAIN': False,
+    'OLD_PASSWORD_FIELD_ENABLED': False,
+    'LOGOUT_ON_PASSWORD_CHANGE': False,
+    'SESSION_LOGIN': True,
+}
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', #default for admin site
     'authservice.backends.EmailPhoneNumberBackend',
@@ -173,6 +187,10 @@ EMAIL_HOST_USER = 'the.ayoadeborah@gmail.com'
 EMAIL_HOST_PASSWORD = 'cmmo brmt iowh iwza'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Intellibin Project',

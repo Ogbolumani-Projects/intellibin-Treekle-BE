@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from .models import *
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -10,6 +11,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
+#from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
+
 
 # serilaizer
 from .serializers import *
@@ -129,6 +133,28 @@ class UserProfileAPIView(APIView):
             serializers.errors
         ) 
     
-
 # class UserPasswordResetAPIView(APIView):
+
+class PasswordChangeAPIView(PasswordChangeView):
+    """
+    View for changing password.
+    Inherits from dj_rest_auth's PasswordChangeView.
+    """
+
+class PasswordResetAPIView(PasswordResetView):
+    """
+    View for initiating password reset process.
+    Inherits from dj_rest_auth's PasswordResetView.
+    """
+
+class PasswordResetConfirmAPIView(PasswordResetConfirmView):
+    """
+    View for confirming password reset process.
+    Inherits from dj_rest_auth's PasswordResetConfirmView.
+    """
     
+class LogoutAPIView(LogoutView):
+    """
+    View for user logout.
+    Inherits from dj_rest_auth's LogoutView.
+    """
