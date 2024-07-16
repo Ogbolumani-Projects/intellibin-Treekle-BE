@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObtainPairSerializer
-from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer
+from dj_rest_auth.serializers import (PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer)
 
 import secrets
 import time
@@ -64,8 +64,6 @@ class UserLoginSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
-
-
 class ConfirmOTPSerializer(serializers.Serializer):
     otp = serializers.CharField()
     email = serializers.EmailField()
@@ -75,8 +73,7 @@ class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class UpdateUserProfileSerializer(serializers.ModelSerializer):
-    
+class UpdateUserProfileSerializer(serializers.ModelSerializer): 
     class Meta:
         model = CustomUser
         fields = "__all__"
@@ -103,48 +100,23 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
 #         user.save()
 #         return attrs
 
+# class PasswordChangeSerializer(serializers.Serializer):
+#     old_password = serializers.CharField()
+#     new_password = serializers.CharField()    
+
+# class PasswordResetSerializer(serializers.Serializer):
+#     email = serializers.EmailField()
+
+# class PasswordResetConfirmSerializer(serializers.Serializer):
+#     token = serializers.CharField()
+#     new_password = serializers.CharField()
+    
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField()
-    new_password = serializers.CharField()    
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
-class PasswordResetSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+class ResetPasswordEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
-class PasswordResetConfirmSerializer(serializers.Serializer):
-    token = serializers.CharField()
-    new_password = serializers.CharField()
-
-# class SendPasswordResetEmailSerializer(serializers.Serializer):
-#   email = serializers.EmailField(max_length=255)
-#   class Meta:
-#     fields = ['email']
-
-#   def validate(self, attrs):
-#     email = attrs.get('email')
-#     if User.objects.filter(email=email).exists():
-#       user = User.objects.get(email = email)
-#       uid = urlsafe_base64_encode(force_bytes(user.id))
-#       print('Encoded UID', uid)
-#       token = PasswordResetTokenGenerator().make_token(user)
-#       print('Password Reset Token', token)
-#       link = 'http://localhost:3000/api/user/reset/'+uid+'/'+token
-#       print('Password Reset Link', link)
-#       # Send EMail
-#       body = 'Click Following Link to Reset Your Password '+link
-#       data = {
-#         'subject':'Reset Your Password',
-#         'body':body,
-#         'to_email':user.email
-#       }
-      
-#       return attrs
-#     else:
-#       raise serializers.ValidationError('You are not a Registered User')
-
-# class UserPasswordResetSerializer(serializers.Serializer):
-#   password = serializers.CharField(max_length=255, write_only=True)
-#   confirm_password = serializers.CharField(max_length=255, write_only=True)
-#   class Meta:
-#     fields = ['password', 'confirm_password']
 
      

@@ -53,6 +53,8 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,6 +152,7 @@ REST_AUTH = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', #default for admin site
     'authservice.backends.EmailPhoneNumberBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 # Internationalization

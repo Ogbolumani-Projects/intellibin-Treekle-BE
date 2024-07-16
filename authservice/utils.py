@@ -12,7 +12,7 @@ def send_mail_to_user(user_mail):
     try:
         mail = send_mail(
             subject="OTP Verification for wastebin",
-            from_email="idriswisdom6@gmail.com",
+            from_email="the.ayoadeborah@gmail.com",
             recipient_list=[user_mail],
             message=generate_otp()
         )

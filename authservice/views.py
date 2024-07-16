@@ -10,10 +10,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
-from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
+
 
 from .serializers import *
 
@@ -138,20 +138,40 @@ class PasswordChangeAPIView(PasswordChangeView):
     Inherits from dj_rest_auth's PasswordChangeView.
     """
 
-class PasswordResetAPIView(PasswordResetView):
-    """
-    View for initiating password reset process.
-    Inherits from dj_rest_auth's PasswordResetView.
-    """
+# class PasswordResetAPIView(PasswordResetView):
+#     """
+#     View for initiating password reset process.
+#     Inherits from dj_rest_auth's PasswordResetView.
+#     """
 
-class PasswordResetConfirmAPIView(PasswordResetConfirmView):
-    """
-    View for confirming password reset process.
-    Inherits from dj_rest_auth's PasswordResetConfirmView.
-    """
+# class PasswordResetConfirmAPIView(PasswordResetConfirmView):
+#     """
+#     View for confirming password reset process.
+#     Inherits from dj_rest_auth's PasswordResetConfirmView.
+#     """
     
 class LogoutAPIView(LogoutView):
     """
     View for user logout.
     Inherits from dj_rest_auth's LogoutView.
     """
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def change_password(request):
+#     if request.method == 'POST':
+#         serializer = ChangePasswordSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = request.user
+#             if user.check_password(serializer.data.get('old_password')):
+#                 user.set_password(serializer.data.get('new_password'))
+#                 user.save()
+#                 update_session_auth_hash(request, user)  # To update session after password change
+#                 return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
+#             return Response({'error': 'Incorrect old password.'}, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserListView(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserRegisterSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
