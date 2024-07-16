@@ -172,6 +172,6 @@ class LogoutAPIView(LogoutView):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class UserListView(APIView):
     def get(self, request):
-        users = User.objects.all()
+        users = CustomUser.objects.all()
         serializer = UserRegisterSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
