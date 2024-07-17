@@ -4,6 +4,7 @@ from django.contrib.auth.backends import BaseBackend, ModelBackend
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from rest_framework.exceptions import ValidationError
 from .models import *
 from django.http import HttpRequest
 
@@ -20,11 +21,34 @@ class EmailPhoneNumberBackend(ModelBackend):
             return
         
         try:
-            user = CustomUser.objects.get(
-                Q(email=username) | Q(phone_number=username)
-            )
-        except UserModel.DoesNotExist:
-            return "Invalid user credentials"
+            print(type(username))
 
-        if user.check_password(password):
-            return user
+            if "@" in username:
+                user = CustomUser.objects.get(
+                    Q(email=username)
+                )
+            else:
+                print(f"This is a number")
+                user = CustomUser.objects.get(
+                    Q(phone_number=username)
+                )
+
+        except UserModel.DoesNotExist:
+            raise ValidationError({
+                "error": "user credentials does not exist"
+            })
+
+        except Exception as e:
+            raise ValidationError({
+                "error": "user credentials does not exist"
+            })
+
+            
+        #     user = CustomUser.objects.get(
+        #         Q(email=username) | Q(phone_number=username)
+        #     )
+        # except UserModel.DoesNotExist:
+        #     return "Invalid user credentials"
+
+        # if user.check_password(password):
+        #     return user

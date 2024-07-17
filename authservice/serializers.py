@@ -16,7 +16,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser  
         fields=("email", "password", "confirm_password")
-        extra_kwargs = {'password': {'write_only': True}, # key word argument
+        extra_kwargs = {'password': {'write_only': True},
                         "confirm_password":{'write_only':True}}
         
     def validate(self, attrs):
@@ -100,12 +100,6 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
 #         user.save()
 #         return attrs
 
-# class PasswordChangeSerializer(serializers.Serializer):
-#     old_password = serializers.CharField()
-#     new_password = serializers.CharField()    
-
-# class PasswordResetSerializer(serializers.Serializer):
-#     email = serializers.EmailField()
 
 # class PasswordResetConfirmSerializer(serializers.Serializer):
 #     token = serializers.CharField()

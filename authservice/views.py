@@ -13,11 +13,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
 from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
-
-
 from .serializers import *
-
 from .utils import *
+
 
 class UserRegisterAPIView(APIView):
     queryset = CustomUser
@@ -37,6 +35,7 @@ class UserRegisterAPIView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         raise ValidationError(
             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
+    
     
 class UserLoginAPIView(APIView):
     queryset = CustomUser
@@ -101,6 +100,7 @@ def confirm_otp(request):
             )
     return Response(serializer.errors)
 
+
 class UserProfileAPIView(APIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -156,20 +156,6 @@ class LogoutAPIView(LogoutView):
     Inherits from dj_rest_auth's LogoutView.
     """
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def change_password(request):
-#     if request.method == 'POST':
-#         serializer = ChangePasswordSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = request.user
-#             if user.check_password(serializer.data.get('old_password')):
-#                 user.set_password(serializer.data.get('new_password'))
-#                 user.save()
-#                 update_session_auth_hash(request, user)  # To update session after password change
-#                 return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
-#             return Response({'error': 'Incorrect old password.'}, status=status.HTTP_400_BAD_REQUEST)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class UserListView(APIView):
     def get(self, request):
         users = CustomUser.objects.all()
