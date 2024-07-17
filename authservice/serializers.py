@@ -34,6 +34,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         
         new_user = CustomUser.objects.create(
             email = validated_data['email'],
+            address = validated_data['address'],
+            full_name = validated_data['full_name'],
+            phone_number = validated_data['phone_number'],
+            
         )
         new_profile = UserProfile.objects.create(user=new_user)
         new_user.set_password(validated_data['password'])
