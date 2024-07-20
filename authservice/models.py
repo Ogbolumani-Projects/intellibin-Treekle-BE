@@ -44,7 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         unique=True,
         )
     verified = models.BooleanField(default=False)
-    phone_number = models.IntegerField()
+    phone_number = models.IntegerField(null=True)
     password = models.CharField(max_length=255)
     address = models.TextField(max_length=255)
     is_active = models.BooleanField(default= True)
