@@ -43,11 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authservice',
     'rest_framework',
     'rest_framework.authtoken', 
     'rest_framework_simplejwt',
     'dj_rest_auth',
+    'authservice',
     'dashboard',
     'drf_spectacular',
 ]
@@ -152,7 +152,6 @@ REST_AUTH = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', #default for admin site
     'authservice.backends.EmailPhoneNumberBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 # Internationalization
