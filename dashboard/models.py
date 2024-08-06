@@ -18,7 +18,7 @@ class wasteCategory(models.Model):
 
 # Create your models here.
 class wasteBin(models.Model):
-    type_of_waste = models.ForeignKey(wasteCategory, on_delete=models.CASCADE)
+    #type_of_waste = models.ForeignKey(wasteCategory, on_delete=models.CASCADE)
     temperature = models.FloatField(null=True)
     location = models.TextField(null=True)
     bin_level = models.IntegerField(null=True)
