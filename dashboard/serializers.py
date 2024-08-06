@@ -7,7 +7,7 @@ class WastePickRequestSerializer(serializers.Serializer):
 class wasteBinSerializer(serializers.ModelSerializer):
     class Meta:
         model = wasteBin
-        fields = ['id', 'is_active', 'location', 'battery_status', 'temperature', 'recyclable_fill_level', 'non_recyclable_fill_level', 'user']
+        fields = ['id', 'is_active', 'location', 'battery_status', 'temperature', 'bin_level', 'user']
 
 class WasteHistorySerializer(serializers.ModelSerializer):
     class Meta:

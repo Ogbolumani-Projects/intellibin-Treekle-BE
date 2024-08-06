@@ -21,7 +21,7 @@ class wasteBin(models.Model):
     type_of_waste = models.ForeignKey(wasteCategory, on_delete=models.CASCADE)
     temperature = models.FloatField(null=True)
     location = models.TextField(null=True)
-    fill_level = models.IntegerField(null=True)
+    bin_level = models.IntegerField(null=True)
     battery_level = models.IntegerField(null=True)
     charge_status = models.BooleanField(null=True)
     power_consumption = models.FloatField(null=True)

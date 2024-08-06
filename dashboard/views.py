@@ -115,7 +115,7 @@ class RequestPickupView(generics.GenericAPIView):
         bin_id = request.data.get('bin_id')
         waste_type = request.data.get('type')
         bin_instance = wasteBin.objects.get(id=bin_id)
-        if bin_instance.fill_level < 50:
+        if bin_instance.bin_level < 50:
             return Response({'message': 'Cannot pickup at the moment.'}, status=status.HTTP_400_BAD_REQUEST)
         # if waste_type == 'recyclable' and bin_instance.recyclable_fill_level < 50:
         #     return Response({'message': 'Cannot pickup at the moment.'}, status=status.HTTP_400_BAD_REQUEST)
