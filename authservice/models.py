@@ -35,8 +35,8 @@ class CustomManager(BaseUserManager):
         return user
         
 
-
 class CustomUser(AbstractUser, PermissionsMixin): 
+    username = None
     full_name = models.CharField(max_length= 255)
     email = models.EmailField(
         verbose_name="email address",
@@ -49,7 +49,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
     address = models.TextField(max_length=255)
     is_active = models.BooleanField(default= True)
     is_admin = models.BooleanField(default=False)
-
 
     objects = CustomManager()
 
