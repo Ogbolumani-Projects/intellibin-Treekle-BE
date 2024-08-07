@@ -24,11 +24,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('authservice.urls')),
     path('user/', include('dashboard.urls')),
-    #path('accounts/', include('dj_rest_auth.urls')),
-    
+    # path('accounts/', include('dj_rest_auth.urls')),
+
+    # admin urls
+    path('api/admin/', include('administration.api.urls')),
+    path('api/admin/smartbins/', include('administration.api.smart_bin.urls')),
+
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/schema/swagger-ui/',
+         SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/',
+         SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

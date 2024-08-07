@@ -32,7 +32,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
+                 'intellibin-treekle-be.onrender.com']
 
 # Application definition
 
@@ -44,13 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken', 
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'dj_rest_auth',
     'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'authservice',
     'dashboard',
     'drf_spectacular',
+    'administration',
 ]
 
 SITE_ID = 1
@@ -66,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'intellibin.urls'
@@ -89,7 +94,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'intellibin.wsgi.application'
 
 AUTH_USER_MODEL = 'authservice.CustomUser'
-DEFAULT_AUTO_FIELD ="django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Database
@@ -151,7 +156,7 @@ REST_AUTH = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend', #default for admin site
+    'django.contrib.auth.backends.ModelBackend',  # default for admin site
     'authservice.backends.EmailPhoneNumberBackend',
 ]
 
@@ -173,7 +178,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR/'assets'
 
-#STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # STATICFILES_DIRS = [BASE_DIR/'static']
 
 

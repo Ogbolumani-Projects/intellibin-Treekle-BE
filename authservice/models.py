@@ -13,19 +13,20 @@ class CustomManager(BaseUserManager):
             raise ValueError("Users must have a valid email address ")
         user = self.model(
             email=self.normalize_email(email),
-           
+
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
+
     def create_superuser(self, email, password=None):
         """
         Creates and saves a superuser with the given email, and password.
         """
         if not email:
             raise ValueError("Users must have a valid email address ")
-        
+
         user = self.create_user(
             email,
             password=password,
@@ -36,25 +37,24 @@ class CustomManager(BaseUserManager):
         raise ValueError("Users must have a valid email address ")
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin): 
-    full_name = models.CharField(max_length= 255)
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    full_name = models.CharField(max_length=255)
     email = models.EmailField(
         verbose_name="email address",
-        max_length= 255,
+        max_length=255,
         unique=True,
-        )
+    )
     verified = models.BooleanField(default=False)
-    phone_number = models.IntegerField(default='12345678')
+    phone_number = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     address = models.TextField(max_length=255)
-    is_active = models.BooleanField(default= True)
+    is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-
 
     objects = CustomManager()
 
     USERNAME_FIELD = "email"
-    #REQUIRED_FIELDS = ["phone_number"]
+    # REQUIRED_FIELDS = ["phone_number"]
 
     def __str__(self):
         return self.email
@@ -74,8 +74,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+
 class UserProfile(models.Model):
-    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE) # every profile must belong one to user
+    # every profile must belong one to user
+    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
     bio = models.TextField(null=True)
 
-    #pass1 = ebubaJohn
+    # pass1 = ebubaJohn
