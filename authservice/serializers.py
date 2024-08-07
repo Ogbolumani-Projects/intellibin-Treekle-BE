@@ -4,8 +4,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
+from .backends import EmailPhoneNumberBackend
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObtainPairSerializer
-from dj_rest_auth.serializers import (PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer)
+from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer
 
 import secrets
 import time
@@ -15,8 +16,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     class Meta:
         model = CustomUser  
-        fields=("email", "password", "confirm_password", "full_name", "phone_number", "address")
-        extra_kwargs = {'password': {'write_only': True},
+        fields=("email", "password", "confirm_password", "phone_number")
+        extra_kwargs = {'password': {'write_only': True}, # key word argument
                         "confirm_password":{'write_only':True}}
         
     def validate(self, attrs):
@@ -33,11 +34,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         
         new_user = CustomUser.objects.create(
-            email = validated_data['email'],
-            address = validated_data['address'],
-            full_name = validated_data['full_name'],
-            phone_number = validated_data['phone_number'],
-            
+            email = validated_data['email'], phone_number = validated_data['phone_number']
         )
         new_profile = UserProfile.objects.create(user=new_user)
         new_user.set_password(validated_data['password'])
@@ -68,6 +65,8 @@ class UserLoginSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
+
+
 class ConfirmOTPSerializer(serializers.Serializer):
     otp = serializers.CharField()
     email = serializers.EmailField()
@@ -77,7 +76,8 @@ class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class UpdateUserProfileSerializer(serializers.ModelSerializer): 
+class UpdateUserProfileSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = CustomUser
         fields = "__all__"
@@ -88,33 +88,19 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
             {"error": "You cannot update your phone number or email address "})
         return attrs 
     
-# class ChangePasswordSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(max_length=255, write_only=True)
-#     confirm_password = serializers.CharField(write_only=True)
-#     class Meta:
-#         fields = ['password', 'confirm_password']
-
-#     def validate(self, attrs):
-#         password = attrs.get('password')
-#         confirm_password = attrs.get('confirm_password')
-#         user = self.context.get('user')
-#         if password != confirm_password:
-#             raise serializers.ValidationError("Password and Confirm Password doesn't match")
-#         user.set_password(password)
-#         user.save()
-#         return attrs
 
 
-# class PasswordResetConfirmSerializer(serializers.Serializer):
-#     token = serializers.CharField()
-#     new_password = serializers.CharField()
-    
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()    
 
-class ResetPasswordEmailSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    new_password = serializers.CharField()
+
 
 
      

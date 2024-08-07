@@ -23,12 +23,14 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('authservice.urls')),
-    path('user/', include('dashboard.urls')),
-    # path('accounts/', include('dj_rest_auth.urls')),
+    path('api/wastebin/', include('dashboard.urls')),
+    path('administration/', include('administration.urls')),
 
     # admin urls
     path('api/admin/', include('administration.api.urls')),
     path('api/admin/smartbins/', include('administration.api.smart_bin.urls')),
+
+    # path('accounts/', include('dj_rest_auth.urls')),
 
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

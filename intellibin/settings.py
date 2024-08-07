@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'authservice',
     'dashboard',
+    'administration',
     'drf_spectacular',
     'administration',
 ]
