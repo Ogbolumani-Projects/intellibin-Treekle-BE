@@ -1,15 +1,57 @@
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth import get_user_model
 
-class WastePickRequestSerializer(serializers.Serializer):
-    type_of_waste = serializers.CharField()
+User = get_user_model()
 
-class wasteBinSerializer(serializers.ModelSerializer):
+class WasteBinSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset=User.objects.all())
+    full_bins = serializers.SerializerMethodField()
+    spacious_bins = serializers.SerializerMethodField()
+    half_bins = serializers.SerializerMethodField()
+
     class Meta:
-        model = wasteBin
-        fields = ['id', 'is_active', 'location', 'battery_status', 'temperature', 'bin_level', 'user']
+        model  = WasteBin
+        fields = "__all__"
 
-class WasteHistorySerializer(serializers.ModelSerializer):
+
+    def full_bins(self, obj):
+        return obj.full_bins
+    
+    def half_bins (self, obj):
+        return obj.half_bins
+    
+    def spacious_bins(self, obj):
+        return obj.spacious_bins
+    
+
+class RequestWasteBinSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset=User.objects.all())
     class Meta:
-        model = wasteHistory
-        fields = ['id', 'bin', 'date_time', 'quantity', 'points', 'status', 'type', 'user']
+        model = WasteBinRequest
+        fields = ["user", "location", "latitude", "longitude","date_requested"]
+
+class WastePickRequestSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset = User.objects.all())
+    Bin = WasteBinSerializer()
+
+    class Meta:
+        model  = WastePickUp
+        fields = ["user", "Bin"]
+
+
+# class WastePickRequestSerializer(serializers.Serializer):
+#     type_of_waste = serializers.CharField()
+
+# class wasteBinSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = wasteBin
+#         fields = ['id', 'is_active', 'location', 'battery_status', 'temperature', 'bin_level', 'user']
+
+# class WasteHistorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = wasteHistory
+#         fields = ['id', 'bin', 'date_time', 'quantity', 'points', 'status', 'type', 'user']
