@@ -33,7 +33,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
-                 'intellibin-treekle-be.onrender.com']
+                 'intellibin-treekle-be-admin.onrender.com']
 
 # Application definition
 
