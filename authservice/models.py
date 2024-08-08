@@ -30,8 +30,8 @@ class CustomManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
-            is_superuser=True,
         )
+        user.is_superuser = True
         user.is_admin = True
         user.is_staff = True
         user.save(using=self._db)
