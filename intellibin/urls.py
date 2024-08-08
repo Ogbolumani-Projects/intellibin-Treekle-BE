@@ -29,6 +29,8 @@ urlpatterns = [
     # admin urls
     path('api/admin/', include('administration.api.urls')),
     path('api/admin/smartbins/', include('administration.api.smart_bin.urls')),
+    path('api/admin/pick-up-request/',
+         include('administration.api.requests.urls')),
 
     # path('accounts/', include('dj_rest_auth.urls')),
 

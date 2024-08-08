@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'dashboard',
     'administration',
     'drf_spectacular',
-    'administration',
 ]
 
 SITE_ID = 1
