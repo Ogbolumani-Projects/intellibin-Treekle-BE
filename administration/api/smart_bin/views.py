@@ -8,8 +8,13 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from authservice.models import CustomUser
 from dashboard.models import WasteBin
 from dashboard.serializers import WasteBinSerializer
+from drf_spectacular.utils import extend_schema
 
 
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
 @api_view(['GET',])
 @authentication_classes((JWTTokenUserAuthentication,))
 @permission_classes((IsAuthenticated,))
@@ -23,6 +28,10 @@ def smart_bin_detail(request, id):
     return Response(serializer.data)
 
 
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
 @api_view(['PUT',])
 @authentication_classes((JWTTokenUserAuthentication,))
 @permission_classes((IsAuthenticated,))
@@ -39,6 +48,10 @@ def activate_smart_bin(request, id):
     return Response(serializer.data)
 
 
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
 @api_view(['PUT',])
 @authentication_classes((JWTTokenUserAuthentication,))
 @permission_classes((IsAuthenticated,))
@@ -55,6 +68,10 @@ def deactivate_smart_bin(request, id):
     return Response(serializer.data)
 
 
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
 @api_view(['POST',])
 @authentication_classes((JWTTokenUserAuthentication,))
 @permission_classes((IsAuthenticated,))

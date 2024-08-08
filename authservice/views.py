@@ -11,15 +11,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
-#from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
-from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
+# from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.views import (
+    PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
 from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
+from drf_spectacular.utils import extend_schema
 
 
 # serilaizer
 from .serializers import *
 
 from .utils import *
+
 
 class UserRegisterAPIView(APIView):
     queryset = CustomUser.objects.all()
@@ -29,9 +32,9 @@ class UserRegisterAPIView(APIView):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            
+
             send_otp = send_mail_to_user(serializer.data['email'])
-            
+
             response = {
                 'success': True,
                 'user': serializer.data,
@@ -39,10 +42,12 @@ class UserRegisterAPIView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         raise ValidationError(
             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
-    
+
+
 class UserLoginAPIView(APIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserLoginSerializer
+
     def post(self, request, *args, **kargs):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -53,7 +58,7 @@ class UserLoginAPIView(APIView):
             }
             if CustomUser.objects.filter(username=request.data['email']).exists():
                 user = CustomUser.objects.get(username=request.data['email'])
-                
+
                 response = {
                     'success': True,
                     'username': user.username,
@@ -64,13 +69,18 @@ class UserLoginAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    request=ResendOTPSerializer,
+    responses=None
+)
 @api_view(["POST"])
 def resend_otp_token(request, *args, **kwargs):
     queryset = CustomUser.objects.all()
     serializers = ResendOTPSerializer(data=request.data)
 
     if serializers.is_valid():
-        get_user = get_object_or_404(CustomUser, email=serializers.data['email']) # true or false
+        get_user = get_object_or_404(
+            CustomUser, email=serializers.data['email'])  # true or false
         try:
             mail = send_mail(
                 subject="OTP Verification for wastebin",
@@ -83,25 +93,29 @@ def resend_otp_token(request, *args, **kwargs):
         except Exception as e:
             print(e)
 
-            return Response({"failed":f"with error {e}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"failed": f"with error {e}"}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializers.errors)
 
 
+@extend_schema(
+    request=ConfirmOTPSerializer,
+    responses=None
+)
 @api_view(["POST"])
 def confirm_otp(request):
 
-    serializer = ConfirmOTPSerializer(data = request.data)
+    serializer = ConfirmOTPSerializer(data=request.data)
 
     if serializer.is_valid():
 
         confirm_otp_code = totp.verify(serializer.data['otp'])
 
         if confirm_otp_code:
-            verified_user = CustomUser.objects.get(email=serializer.data['email'])
+            verified_user = CustomUser.objects.get(
+                email=serializer.data['email'])
             verified_user.verified = True
             verified_user.save()
 
-    
             return Response("You are now verified")
         else:
             return Response(
@@ -109,28 +123,32 @@ def confirm_otp(request):
             )
     return Response(serializer.errors)
 
+
 class UserProfileAPIView(APIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
     queryset = CustomUser.objects.all()
+    serializer_class = UpdateUserProfileSerializer
+
     def get(self, request):
-    
+
         user = CustomUser.objects.get(email=request.user.email)
 
         return Response(
             {
-            'email':user.email,
-            'full_name': user.full_name,
-            'phone_number': user.phone_number
+                'email': user.email,
+                'full_name': user.full_name,
+                'phone_number': user.phone_number
             }
         )
-    
-    def put(self,request):
+
+    def put(self, request):
         get_user = CustomUser.objects.get(id=request.user.id)
-        serializers = UpdateUserProfileSerializer(get_user, data= request.data, partial=True)
+        serializers = UpdateUserProfileSerializer(
+            get_user, data=request.data, partial=True)
 
         if serializers.is_valid():
-   
+
             serializers.save()
 
             return Response(
@@ -138,9 +156,10 @@ class UserProfileAPIView(APIView):
             )
         return Response(
             serializers.errors
-        ) 
-    
+        )
+
 # class UserPasswordResetAPIView(APIView):
+
 
 class PasswordChangeAPIView(PasswordChangeView):
     """
@@ -148,24 +167,25 @@ class PasswordChangeAPIView(PasswordChangeView):
     Inherits from dj_rest_auth's PasswordChangeView.
     """
 
+
 class PasswordResetAPIView(PasswordResetView):
     """
     View for initiating password reset process.
     Inherits from dj_rest_auth's PasswordResetView.
     """
 
+
 class PasswordResetConfirmAPIView(PasswordResetConfirmView):
     """
     View for confirming password reset process.
     Inherits from dj_rest_auth's PasswordResetConfirmView.
     """
-    
-class LogoutAPIView(LogoutView):
-    """
-    View for user logout.
-    Inherits from dj_rest_auth's LogoutView.
-    """
 
+# class LogoutAPIView(LogoutView):
+#     """
+#     View for user logout.
+#     Inherits from dj_rest_auth's LogoutView.
+#     """
 
 
 # from django.shortcuts import render
@@ -195,9 +215,9 @@ class LogoutAPIView(LogoutView):
 #         serializer = UserRegisterSerializer(data=request.data)
 #         if serializer.is_valid():
 #             serializer.save()
-            
+
 #             send_otp = send_mail_to_user(serializer.data['email'])
-            
+
 #             response = {
 #                 'success': True,
 #                 'user': serializer.data,
@@ -205,8 +225,8 @@ class LogoutAPIView(LogoutView):
 #             return Response(response, status=status.HTTP_200_OK)
 #         raise ValidationError(
 #             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
-    
-    
+
+
 # class UserLoginAPIView(APIView):
 #     queryset = CustomUser
 #     serializer_class = UserLoginSerializer
@@ -220,7 +240,7 @@ class LogoutAPIView(LogoutView):
 #             }
 #             if CustomUser.objects.filter(username=request.data['email']).exists():
 #                 user = CustomUser.objects.get(username=request.data['email'])
-                
+
 #                 response = {
 #                     'success': True,
 #                     'username': user.username,
@@ -240,10 +260,10 @@ class LogoutAPIView(LogoutView):
 #         get_user = CustomUser.objects.filter(email=serializers.data['email']).exists() # true or false
 
 #         if get_user:
-#             get_user = CustomUser.objects.get(email=serializers.data['email']) 
+#             get_user = CustomUser.objects.get(email=serializers.data['email'])
 #             send_email_with_otp = send_mail_to_user(get_user.email)
 #             return Response("OTP has been sent")
-        
+
 #         return Response("wrong email")
 #     return Response(serializers.errors)
 
@@ -262,7 +282,7 @@ class LogoutAPIView(LogoutView):
 #             verified_user.verified = True
 #             verified_user.save()
 
-    
+
 #             return Response("You are now verified")
 #         else:
 #             return Response(
@@ -286,13 +306,13 @@ class LogoutAPIView(LogoutView):
 #             'phone_number': user.phone_number
 #             }
 #         )
-    
+
 #     def put(self,request):
 #         get_user = CustomUser.objects.get(id=request.user.id)
 #         serializers = UpdateUserProfileSerializer(get_user, data= request.data, partial=True)
 
 #         if serializers.is_valid():
-   
+
 #             serializers.save()
 
 #             return Response(
@@ -300,7 +320,7 @@ class LogoutAPIView(LogoutView):
 #             )
 #         return Response(
 #             serializers.errors
-#         ) 
+#         )
 
 # class PasswordChangeAPIView(PasswordChangeView):
 #     """
@@ -319,7 +339,7 @@ class LogoutAPIView(LogoutView):
 # #     View for confirming password reset process.
 # #     Inherits from dj_rest_auth's PasswordResetConfirmView.
 # #     """
-    
+
 # class LogoutAPIView(LogoutView):
 #     """
 #     View for user logout.

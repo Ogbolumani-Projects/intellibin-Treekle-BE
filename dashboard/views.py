@@ -16,6 +16,7 @@ from .models import *
 
 from django.http.response import HttpResponse
 
+
 class DashViewset(ReadOnlyModelViewSet):
     queryset = WasteBin.objects.prefetch_related("compartments").all()
     permission_classes = (IsAuthenticated,)
@@ -23,22 +24,24 @@ class DashViewset(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 
 class WasteBinViewset(ModelViewSet):
     pass
-    
+
 
 class WasteBinRequest(ModelViewSet):
     queryset = WasteBinRequest
     serializer_class = RequestWasteBinSerializer
     permission_classes = (IsAuthenticated,)
-    http_method_names = ['get','post', 'delete']
+    http_method_names = ['get', 'post', 'delete']
+
 
 class WasteBinPickupView(ModelViewSet):
     queryset = WastePickUp.objects.all()
     permission_classes = (IsAuthenticated,)
-     
+    serializer_class = WastePickRequestSerializer
+
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
 
@@ -50,12 +53,12 @@ class WasteBinPickupView(ModelViewSet):
 # class DashBoardView(APIView):
 #     queryset = CustomUser.objects.all()
 #     permission_classes = (IsAuthenticated,)
-    
+
 #     def get(self, request):
-#         waste_bins = wasteBin.objects.filter(user=request.user) 
-#         # a list of bins        
-        
-#         waste_bin_list = [  
+#         waste_bins = wasteBin.objects.filter(user=request.user)
+#         # a list of bins
+
+#         waste_bin_list = [
 #             {
 #                 'waste_bin': waste_bin
 #             }
@@ -74,7 +77,7 @@ class WasteBinPickupView(ModelViewSet):
 
 #             }
 #         )
-    
+
 #     def post(self, request):
 #         pass
 
@@ -83,7 +86,7 @@ class WasteBinPickupView(ModelViewSet):
 #     permission_classes = (IsAuthenticated,)
 #     def post(self, request):
 #         serializers = WastePickRequestSerializer(data=request.data)
-       
+
 #         if serializers.is_valid():
 #             waste_type =  wasteCategory.objects.get(name=serializers.data['type_of_waste'])
 #             print(waste_type)
@@ -95,9 +98,9 @@ class WasteBinPickupView(ModelViewSet):
 
 #             return Response(
 #                 "Request Successful", status=status.HTTP_201_CREATED
-#             )   
+#             )
 #         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 # class WasteBinUpdateView(generics.UpdateAPIView):
 #     def partial_update(self, request, *args, **kwargs):
 #         return super().partial_update(request, *args, **kwargs)

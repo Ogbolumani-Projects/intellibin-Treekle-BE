@@ -10,7 +10,7 @@ from authservice.models import CustomUser
 from dashboard.models import WastePickUp, waste_pickup_status
 from dashboard.serializers import WastePickRequestSerializer
 from django.utils.dateparse import parse_datetime
-from drf_spectacular.utils import extend_schema, OpenApiRequest, OpenApiExample
+from drf_spectacular.utils import extend_schema
 
 
 class PendingPickupRequestsView(ListAPIView):
@@ -52,6 +52,10 @@ class FulfilledPickupRequestsView(ListAPIView):
         return self.get_queryset(status='Picked up')
 
 
+@extend_schema(
+    request=WastePickRequestSerializer,
+    responses=None
+)
 @api_view(['PUT',])
 @authentication_classes((JWTTokenUserAuthentication,))
 @permission_classes((IsAuthenticated,))
