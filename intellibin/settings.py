@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'dashboard',
     'administration',
     'drf_spectacular',
+    'django_filters',
 ]
 
 SITE_ID = 1
