@@ -10,20 +10,32 @@ class WasteBinSerializer(serializers.ModelSerializer):
     full_bins = serializers.SerializerMethodField()
     spacious_bins = serializers.SerializerMethodField()
     half_bins = serializers.SerializerMethodField()
-
+    bin_level = serializers.SerializerMethodField()
+    weight = serializers.SerializerMethodField()
     class Meta:
         model  = WasteBin
         fields = "__all__"
 
+        extra_fields = ["full_bins", "spacious_bins", "half_bins"]
+        exclude = ()
 
-    def full_bins(self, obj):
+
+
+    def get_full_bins(self, obj):
         return obj.full_bins
     
-    def half_bins (self, obj):
+    def get_half_bins (self, obj):
+        print(obj)
         return obj.half_bins
     
-    def spacious_bins(self, obj):
+    def get_spacious_bins(self, obj):
         return obj.spacious_bins
+    
+    def get_bin_level(self, obj):
+        return obj.bin_level
+    
+    def get_weight(self, obj):
+        return obj.weight
     
 
 class RequestWasteBinSerializer(serializers.ModelSerializer):
@@ -36,22 +48,8 @@ class RequestWasteBinSerializer(serializers.ModelSerializer):
 class WastePickRequestSerializer(serializers.ModelSerializer):
 
     user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset = User.objects.all())
-    Bin = WasteBinSerializer()
+    parent_bin = WasteBinSerializer()
 
     class Meta:
         model  = WastePickUp
-        fields = ["user", "Bin"]
-
-
-# class WastePickRequestSerializer(serializers.Serializer):
-#     type_of_waste = serializers.CharField()
-
-# class wasteBinSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = wasteBin
-#         fields = ['id', 'is_active', 'location', 'battery_status', 'temperature', 'bin_level', 'user']
-
-# class WasteHistorySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = wasteHistory
-#         fields = ['id', 'bin', 'date_time', 'quantity', 'points', 'status', 'type', 'user']
+        fields = "__all__"
