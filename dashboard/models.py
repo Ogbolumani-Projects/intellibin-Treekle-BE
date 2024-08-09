@@ -69,11 +69,11 @@ waste_pickup_status = [
 
 class WastePickUp(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    waste_type = models.CharField(choices=waste_category, max_length=20)
+    waste_type = models.CharField(choices=waste_category, max_length=253)
     parent_bin = models.ForeignKey(WasteBin, on_delete=models.CASCADE)
     reward_gained = models.IntegerField(null=True)
     status = models.CharField(
-        choices=waste_pickup_status, max_length=20, default='Pending')
+        choices=waste_pickup_status, max_length=253, default='Pending')
     pickup_date_time = models.DateTimeField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_picked = models.DateTimeField()
