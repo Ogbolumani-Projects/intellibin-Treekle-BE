@@ -64,7 +64,7 @@ class WastePickUp(models.Model):
     waste_type = models.CharField(choices=waste_category, max_length=20)
     parent_bin = models.ForeignKey(WasteBin, on_delete=models.CASCADE)
     reward_gained = models.IntegerField(null=True)
-    confirmed = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
     picked_up = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
