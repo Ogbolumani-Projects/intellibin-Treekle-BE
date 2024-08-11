@@ -15,7 +15,7 @@ from django.http import Http404
 from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
-
+from administration.serializers import *
 
 class WasteBinViewset(ReadOnlyModelViewSet):
     queryset = WasteBin.objects.all()
@@ -95,3 +95,16 @@ class DashboardParameterViewSet(viewsets.ViewSet):
             return Response({'status': 'success', 'message': 'Data saved successfully'})
         else:
             return Response({'status': 'error', 'message': serializer.errors}, status=400)
+        
+class SaveBinData(APIView):
+
+    serializer_class = AdminWasteBinSerializer
+    
+    def get(self,request):
+        serializer = self.serializer_class(data=request.query_params)
+        if serializer.is_valid():
+
+            #data = serializer.create(serializer.validated_data)
+            data = serializer.save()
+            
+        return Response(data, status=status.HTTP_201_CREATED)
