@@ -47,7 +47,7 @@ class RequestWasteBinSerializer(serializers.ModelSerializer):
 class WastePickRequestSerializer(serializers.ModelSerializer):
 
     user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset = User.objects.all())
-    parent_bin = WasteBinSerializer()
+    parent_bin = serializers.PrimaryKeyRelatedField(queryset=WasteBin.objects.all())
 
     class Meta:
         model  = WastePickUp

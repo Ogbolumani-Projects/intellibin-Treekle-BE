@@ -106,7 +106,6 @@ class AdminWasteBinSerializer(ModelSerializer):
 
 
 class WasteRequestSerializer(ModelSerializer):
-
     class Meta:
         model  = WasteBinRequest
         fields = "__all__"
