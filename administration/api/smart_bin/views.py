@@ -9,63 +9,7 @@ from authservice.models import CustomUser
 from dashboard.models import WasteBin
 from dashboard.serializers import WasteBinSerializer
 from drf_spectacular.utils import extend_schema
-
-
-@extend_schema(
-    request=WasteBinSerializer,
-    responses=None
-)
-@api_view(['GET',])
-@authentication_classes((JWTTokenUserAuthentication,))
-@permission_classes((IsAuthenticated,))
-def smart_bin_detail(request, id):
-    try:
-        smart_bin = WasteBin.objects.get(id=id)
-    except WasteBin.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    serializer = WasteBinSerializer(smart_bin)
-    return Response(serializer.data)
-
-
-@extend_schema(
-    request=WasteBinSerializer,
-    responses=None
-)
-@api_view(['PUT',])
-@authentication_classes((JWTTokenUserAuthentication,))
-@permission_classes((IsAuthenticated,))
-def activate_smart_bin(request, id):
-    try:
-        smart_bin = WasteBin.objects.get(id=id)
-    except WasteBin.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    smart_bin.is_active = True
-    smart_bin.save()
-
-    serializer = WasteBinSerializer(smart_bin)
-    return Response(serializer.data)
-
-
-@extend_schema(
-    request=WasteBinSerializer,
-    responses=None
-)
-@api_view(['PUT',])
-@authentication_classes((JWTTokenUserAuthentication,))
-@permission_classes((IsAuthenticated,))
-def deactivate_smart_bin(request, id):
-    try:
-        smart_bin = WasteBin.objects.get(id=id)
-    except WasteBin.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    smart_bin.is_active = False
-    smart_bin.save()
-
-    serializer = WasteBinSerializer(smart_bin)
-    return Response(serializer.data)
+from dashboard.models import BinCompartment
 
 
 @extend_schema(
@@ -78,20 +22,31 @@ def deactivate_smart_bin(request, id):
 def create_smart_bin(request):
     try:
         try:
-            request_data = request.data
+            request_data = request.GET
             user_id = int(request_data['user_id'])
             user = CustomUser.objects.get(id=user_id)
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         smart_bin = WasteBin.objects.create(user=user)
+        print(request_data)
         serializer = WasteBinSerializer(smart_bin, request_data)
 
         if serializer.is_valid():
             serializer.save()
+
+            BinCompartment.objects.create(
+                parent_bin=smart_bin, type_of_waste="RECYCLABLE"
+            )
+
+            BinCompartment.objects.create(
+                parent_bin=smart_bin, type_of_waste="NON-RECYCLABLE"
+            )
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     except Exception as e:
+        print(e)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
