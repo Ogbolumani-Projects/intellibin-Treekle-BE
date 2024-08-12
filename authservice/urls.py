@@ -19,11 +19,7 @@ urlpatterns = [
     path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('logout/', LogoutAPIView.as_view(), name='logout'),
-    #path('users/', UserListView.as_view(), name='user-list'),
-    #path('user/password/reset/', PasswordResetAPIView.as_view(), name='rest_password_reset'),
-    # path('user/password/reset/confirm/<uidb64>/<token>/',PasswordResetConfirmView.as_view(),
-    #      name='password_reset_confirm'),
-    # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done')
+    
 ]
 
 
