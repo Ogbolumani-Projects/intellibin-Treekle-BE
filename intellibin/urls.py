@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/users/', include('authservice.urls')),
     path('api/wastebin/', include('dashboard.urls')),
     path('administration/', include('administration.urls')),
+    path('payments/', include("payments.urls")),
     #path('accounts/', include('dj_rest_auth.urls')),
     
     # YOUR PATTERNS

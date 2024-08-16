@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'corsheaders',
+    'push_notifications',
     
 ]
 
@@ -213,3 +214,13 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+        "GCM_API_KEY": "<your api key>",
+        "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+}
+
+SOUTH_MIGRATION_MODULES = {"push_notifications": "push_notifications.south_migrations"}
+
+PAYSTACK_SECRET_KEY = ""
+PAYSTACK_PUBLIC_KEY = ""
