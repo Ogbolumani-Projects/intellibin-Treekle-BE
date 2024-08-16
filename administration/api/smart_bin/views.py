@@ -6,10 +6,66 @@ from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
 from authservice.models import CustomUser
-from dashboard.models import WasteBin
+from dashboard.models import BinCompartment, WasteBin
 from dashboard.serializers import WasteBinSerializer
 from drf_spectacular.utils import extend_schema
-from dashboard.models import BinCompartment
+
+
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
+@api_view(['GET',])
+@authentication_classes((JWTTokenUserAuthentication,))
+@permission_classes((IsAuthenticated,))
+def smart_bin_detail(request, id):
+    try:
+        smart_bin = WasteBin.objects.get(id=id)
+    except WasteBin.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = WasteBinSerializer(smart_bin)
+    return Response(serializer.data)
+
+
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
+@api_view(['PUT',])
+@authentication_classes((JWTTokenUserAuthentication,))
+@permission_classes((IsAuthenticated,))
+def activate_smart_bin(request, id):
+    try:
+        smart_bin = WasteBin.objects.get(id=id)
+    except WasteBin.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    smart_bin.is_active = True
+    smart_bin.save()
+
+    serializer = WasteBinSerializer(smart_bin)
+    return Response(serializer.data)
+
+
+@extend_schema(
+    request=WasteBinSerializer,
+    responses=None
+)
+@api_view(['PUT',])
+@authentication_classes((JWTTokenUserAuthentication,))
+@permission_classes((IsAuthenticated,))
+def deactivate_smart_bin(request, id):
+    try:
+        smart_bin = WasteBin.objects.get(id=id)
+    except WasteBin.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    smart_bin.is_active = False
+    smart_bin.save()
+
+    serializer = WasteBinSerializer(smart_bin)
+    return Response(serializer.data)
 
 
 @extend_schema(
