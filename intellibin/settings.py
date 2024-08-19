@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'push_notifications',
+    'payments',
+    'notification',
     
 ]
 
@@ -222,5 +224,5 @@ PUSH_NOTIFICATIONS_SETTINGS = {
 
 SOUTH_MIGRATION_MODULES = {"push_notifications": "push_notifications.south_migrations"}
 
-PAYSTACK_SECRET_KEY = ""
-PAYSTACK_PUBLIC_KEY = ""
+PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
+PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
