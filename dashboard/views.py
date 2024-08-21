@@ -105,12 +105,14 @@ class SaveBinData(APIView):
     # this is creating a new bin
 
     # in actuality it should update the bin
-    serializer_class = AdminWasteBinSerializer
+    serializer_class = WasteBinSerializer
     def post(self, request, pk):
 
         waste_bin = get_object_or_404(WasteBin.objects.all(),pk=pk)
+
         serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
         if serializer.is_valid():
             data = serializer.save()
-        
-        return Response (data, status=status.HTTP_200_OK)
+
+            return Response (serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors)
