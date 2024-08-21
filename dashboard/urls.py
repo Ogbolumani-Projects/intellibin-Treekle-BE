@@ -8,7 +8,7 @@ router.register("dashboard", WasteBinViewset, basename="dashboard")
 router.register("bin-request", WasteBinRequest, basename="bin-request")
 
 urlpatterns = [
-    path("save_data/", SaveBinData.as_view(), name='save_bin_data')
+    path("save_data/<int:pk>/", SaveBinData.as_view(), name='save_bin_data')
     
 ]+router.urls
 
