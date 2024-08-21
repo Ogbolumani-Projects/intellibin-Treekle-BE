@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
@@ -102,9 +102,12 @@ class DashboardParameterViewSet(viewsets.ViewSet):
         
 class SaveBinData(APIView):
 
+    # this is creating a new bin
+
+    # in actuality it should update the bin
     serializer_class = AdminWasteBinSerializer
     
-    def get(self,request):
+    def post(self,request):
         serializer = self.serializer_class(data=request.query_params)
         if serializer.is_valid():
 
@@ -112,3 +115,13 @@ class SaveBinData(APIView):
             data = serializer.save()
             
         return Response(data, status=status.HTTP_201_CREATED)
+
+    def patch(self, request, pk):
+
+        waste_bin = get_object_or_404(WasteBin, lpk=pk)
+        serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
+
+        if serializer.is_valid():
+            data = serializer.save()
+        
+        return Response (data, status=status.HTTP_200_OK)
