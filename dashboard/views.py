@@ -17,6 +17,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
 
+
+# is for the user to view details about their bins
 class WasteBinViewset(ReadOnlyModelViewSet):
     queryset = WasteBin.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -26,15 +28,17 @@ class WasteBinViewset(ReadOnlyModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
     
-
+# user can request for a bin, approval or actual bin creation is done on the admin
 class WasteBinRequest(ModelViewSet):
     queryset = WasteBinRequest
     serializer_class = RequestWasteBinSerializer
     
     permission_classes = (IsAuthenticated,)
-    http_method_names = ['get','post', 'delete']
+    #methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
+    http_method_names = ['get','post', 'delete'] 
 
 
+# is to request for a bin pickup
 class WasteBinPickupView(ModelViewSet):
     queryset = WastePickUp.objects.all()
     permission_classes = (IsAuthenticated,)

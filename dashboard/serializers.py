@@ -16,8 +16,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
     class Meta:
         model  = WasteBin
         fields = "__all__"
-        extra_fields = ["full_bins", "spacious_bins", "half_bins"]
-        exclude = ()
+        extra_fields = ["full_bins", "spacious_bins", "half_bins", "user"]
 
 
     def get_full_bins(self, obj):
@@ -55,5 +54,5 @@ class WastePickRequestSerializer(serializers.ModelSerializer):
 
 class DashboardParameterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BinCompartment
+        model = BinCompartment 
         fields = '__all__'
