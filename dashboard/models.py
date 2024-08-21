@@ -58,6 +58,14 @@ class WasteBin(BinLocation):
         # return self.compartments.filter(user=self.user, bin_level__lt=45).count()
         return self.compartments.filter(bin_level__lt=45).count()
     
+    @property
+    def bin_level(self):
+        return self.compartments.filter(type_of_waste="NON_RECYCLABLE")[0].bin_level
+    
+    @property
+    def weight(self):
+        return self.compartments.filter(type_of_waste="RECYCLABLE")[0].weight
+    
 
 class WastePickUp(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
