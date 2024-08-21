@@ -108,7 +108,7 @@ class SaveBinData(APIView):
     serializer_class = AdminWasteBinSerializer
     def post(self, request, pk):
 
-        waste_bin = get_object_or_404(WasteBin,pk=pk)
+        waste_bin = get_object_or_404(WasteBin.objects.all(),pk=pk)
         serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
         if serializer.is_valid():
             data = serializer.save()
