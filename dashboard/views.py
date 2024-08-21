@@ -116,7 +116,7 @@ class SaveBinData(APIView):
             
         return Response(data, status=status.HTTP_201_CREATED)
 
-    def patch(self, request, pk):
+    def put(self, request, pk):
 
         waste_bin = get_object_or_404(WasteBin, lpk=pk)
         serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
