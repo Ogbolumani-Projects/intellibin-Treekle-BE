@@ -17,6 +17,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
         model  = WasteBin
         fields = "__all__"
         extra_fields = ["full_bins", "spacious_bins", "half_bins", "user"]
+        exclude = ()
 
 
     def get_full_bins(self, obj):

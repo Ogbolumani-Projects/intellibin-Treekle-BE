@@ -45,17 +45,17 @@ class WasteBin(BinLocation):
 
     @property
     def full_bins(self):   
-        return self.compartments.filter(user=self.user, bin_level__gt=50).count()
+        # return self.compartments.filter(user=self.user, bin_level__gt=50).count()
         return self.compartments.filter(bin_level__gt=50).count()
 
     @property
     def half_bins(self):
-        return self.compartments.filter(user=self.user, bin_level=50).count()
+        # return self.compartments.filter(user=self.user, bin_level=50).count()
         return self.compartments.filter(bin_level=50).count()
 
     @property
     def spacious_bins(self):
-        return self.compartments.filter(user=self.user, bin_level__lt=45).count()
+        # return self.compartments.filter(user=self.user, bin_level__lt=45).count()
         return self.compartments.filter(bin_level__lt=45).count()
     
 
