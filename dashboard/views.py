@@ -111,6 +111,6 @@ class SaveBinData(APIView):
         waste_bin = get_object_or_404(WasteBin,pk=pk)
         serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
         if serializer.is_valid():
-            data = serializer.update(waste_bin, request.query_params)
+            data = serializer.save()
         
         return Response (data, status=status.HTTP_200_OK)
