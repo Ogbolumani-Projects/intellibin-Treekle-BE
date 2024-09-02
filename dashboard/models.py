@@ -67,6 +67,9 @@ class WasteBin(BinLocation):
         return self.compartments.filter(type_of_waste="RECYCLABLE")[0].weight
     
 
+    def __str__(self):
+        return f"{self.device_id} - {self.reading} at {self.timestamp}"
+    
 class WastePickUp(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     waste_type = models.CharField(choices=waste_category, max_length=20)
@@ -101,6 +104,7 @@ class WasteBinRequest(BinLocation):
     approved = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
     
+
 
 
 

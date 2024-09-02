@@ -11,11 +11,12 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import *
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
+from .models import SensorData
 
 
 # is for the user to view details about their bins
@@ -116,3 +117,55 @@ class SaveBinData(APIView):
 
             return Response (serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
+
+
+
+def record_sensor_data(request):
+    if request.method == 'GET':
+        bin_id = request.GET.get('bin_id')
+        date = request.GET.get('date')
+        time = request.GET.get('time')
+        waste_height = request.GET.get('waste_height')
+        temperature = request.GET.get('temperature')
+        humidity = request.GET.get('humidity')
+        weight = request.GET.get('weight')
+        batt_value = request.GET.get('batt_value')
+        latitude = request.GET.get('latitude')
+        longitude = request.GET.get('longitude')
+        weather_condition = request.GET.get('weather_condition')
+
+        if all([bin_id, date, time, waste_height, temperature, humidity, weight, batt_value, latitude, longitude, weather_condition]):
+            try:
+                waste_height = float(waste_height)
+                temperature = float(temperature)
+                humidity = float(humidity)
+                weight = float(weight)
+                batt_value = float(batt_value)
+                latitude = float(latitude)
+                longitude = float(longitude)
+                
+                # Save data to the database
+                SensorData.objects.create(
+                    bin_id=bin_id,
+                    date=date,
+                    time=time,
+                    waste_height=waste_height,
+                    temperature=temperature,
+                    humidity=humidity,
+                    weight=weight,
+                    batt_value=batt_value,
+                    latitude=latitude,
+                    longitude=longitude,
+                    weather_condition=weather_condition
+                )
+                
+                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'})
+            
+            except ValueError as e:
+                return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
+        
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
