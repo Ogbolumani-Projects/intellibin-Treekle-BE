@@ -47,7 +47,7 @@ class WasteBinPickupView(ModelViewSet):
     queryset = WastePickUp.objects.all()
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["completed", "pending", "waste_type"]
+    filterset_fields = ["status", "waste_type"]
     serializer_class = WastePickRequestSerializer
     http_method_names = ['get', 'post']
 
