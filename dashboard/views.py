@@ -16,7 +16,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
-from .models import SensorData
+from .sensor_data import SensorData
 
 from django.http.response import HttpResponse
 
@@ -27,18 +27,19 @@ class WasteBinViewset(ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = WasteBinSerializer
 
-
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 # user can request for a bin, approval or actual bin creation is done on the admin
+
+
 class WasteBinRequest(ModelViewSet):
     queryset = WasteBinRequest
     serializer_class = RequestWasteBinSerializer
-    
+
     permission_classes = (IsAuthenticated,)
-    #methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
-    http_method_names = ['get','post', 'delete'] 
+    # methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
+    http_method_names = ['get', 'post', 'delete']
 
 
 # is to request for a bin pickup
@@ -48,12 +49,11 @@ class WasteBinPickupView(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["completed", "pending", "waste_type"]
     serializer_class = WastePickRequestSerializer
-    http_method_names = ['get','post']
-
+    http_method_names = ['get', 'post']
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 
 # class DashboardParameterView(APIView):
 
@@ -102,24 +102,26 @@ class DashboardParameterViewSet(viewsets.ViewSet):
             return Response({'status': 'success', 'message': 'Data saved successfully'})
         else:
             return Response({'status': 'error', 'message': serializer.errors}, status=400)
-        
+
+
 class SaveBinData(APIView):
 
     # this is creating a new bin
 
     # in actuality it should update the bin
     serializer_class = WasteBinSerializer
+
     def post(self, request, pk):
 
-        waste_bin = get_object_or_404(WasteBin.objects.all(),pk=pk)
+        waste_bin = get_object_or_404(WasteBin.objects.all(), pk=pk)
 
-        serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
+        serializer = self.serializer_class(
+            waste_bin, data=request.query_params, partial=True)
         if serializer.is_valid():
             data = serializer.save()
 
-            return Response (serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
-
 
 
 def record_sensor_data(request):
@@ -145,7 +147,7 @@ def record_sensor_data(request):
                 batt_value = float(batt_value)
                 latitude = float(latitude)
                 longitude = float(longitude)
-                
+
                 # Save data to the database
                 SensorData.objects.create(
                     bin_id=bin_id,
@@ -160,14 +162,13 @@ def record_sensor_data(request):
                     longitude=longitude,
                     weather_condition=weather_condition
                 )
-                
+
                 return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'})
-            
+
             except ValueError as e:
                 return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
-        
+
         else:
             return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'})
-    
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})

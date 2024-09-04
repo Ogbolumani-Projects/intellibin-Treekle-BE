@@ -17,6 +17,7 @@ class BinCompartment(models.Model):
     temperature = models.FloatField(null=True)
     weight = models.FloatField(null=True, default=0)
     bin_level = models.IntegerField(null=True)
+    new_field = models.BooleanField(default=False)
 
 
 class BinLocation(models.Model):
@@ -47,7 +48,7 @@ class WasteBin(BinLocation):
         )
 
     @property
-    def full_bins(self):   
+    def full_bins(self):
         # return self.compartments.filter(user=self.user, bin_level__gt=50).count()
         return self.compartments.filter(bin_level__gt=50).count()
 
@@ -60,19 +61,18 @@ class WasteBin(BinLocation):
     def spacious_bins(self):
         # return self.compartments.filter(user=self.user, bin_level__lt=45).count()
         return self.compartments.filter(bin_level__lt=45).count()
-    
+
     @property
     def bin_level(self):
         return self.compartments.filter(type_of_waste="NON_RECYCLABLE")[0].bin_level
-    
+
     @property
     def weight(self):
         return self.compartments.filter(type_of_waste="RECYCLABLE")[0].weight
-    
 
     def __str__(self):
         return f"{self.device_id} - {self.reading} at {self.timestamp}"
-    
+
 
 waste_pickup_status = [
     ("Pending", "Pending"),
@@ -80,7 +80,8 @@ waste_pickup_status = [
     ("Picked up", "Picked up"),
     ("Cancelled", "Cancelled"),
 ]
-    
+
+
 class WastePickUp(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     waste_type = models.CharField(choices=waste_category, max_length=253)
@@ -94,7 +95,8 @@ class WastePickUp(models.Model):
 
     def gain_reward_points(self):
 
-        compartments = self.parent_bin.compartments.filter(type_of_waste="RECYCLABLE")          
+        compartments = self.parent_bin.compartments.filter(
+            type_of_waste="RECYCLABLE")
         # assumption is that a single comparment
         if compartments[0].weight > 50:
             self.parent_bin.reward_points += 10
@@ -112,11 +114,3 @@ class WasteBinRequest(BinLocation):
     date_requested = models.DateTimeField(auto_now_add=True, null=True)
     approved = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
-
-
-
-
-
-
-
-    

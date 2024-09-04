@@ -23,7 +23,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('authservice.urls')),
-    path('api/wastebin/', include('dashboard.urls')),
+    path('', include('dashboard.urls')),
     path('administration/', include('administration.urls')),
 
     # admin urls
