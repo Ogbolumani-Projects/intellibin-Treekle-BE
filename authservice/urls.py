@@ -9,7 +9,7 @@ from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, Passw
 
 
 urlpatterns = [
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/', UserLoginAPIView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', UserRegisterAPIView.as_view(), name='login'),
     path("resend_otp/", resend_otp_token, name='resend_otp'),

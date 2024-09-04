@@ -16,6 +16,7 @@ from dj_rest_auth.views import (
     PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
 from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
 from drf_spectacular.utils import extend_schema
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 # serilaizer
@@ -58,11 +59,14 @@ class UserLoginAPIView(APIView):
             }
             if CustomUser.objects.filter(username=request.data['email']).exists():
                 user = CustomUser.objects.get(username=request.data['email'])
+                refresh = RefreshToken.for_user(user)
 
                 response = {
                     'success': True,
-                    'username': user.username,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
                     'email': user.email,
+                    'phone_number': user.phone_number,
                 }
                 return Response(response, status=status.HTTP_200_OK)
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
