@@ -55,7 +55,12 @@ INSTALLED_APPS = [
     'dashboard',
     'administration',
     'drf_spectacular',
-    "corsheaders",
+    'django_filters',
+    'corsheaders',
+    'push_notifications',
+    'payments',
+    'notification',
+    
 ]
 
 SITE_ID = 1
@@ -63,6 +68,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -209,3 +215,19 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
+
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000'
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+        "GCM_API_KEY": "<your api key>",
+        "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+}
+
+SOUTH_MIGRATION_MODULES = {"push_notifications": "push_notifications.south_migrations"}
+
+PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
+PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"

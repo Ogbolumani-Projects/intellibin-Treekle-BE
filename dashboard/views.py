@@ -1,187 +1,173 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from .serializers import *
-from .models import *
-from authservice.models import *
-
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import *
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from .models import *
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from administration.serializers import *
+from .models import SensorData
 
 from django.http.response import HttpResponse
 
 
-class DashViewset(ReadOnlyModelViewSet):
-    queryset = WasteBin.objects.prefetch_related("compartments").all()
+# is for the user to view details about their bins
+class WasteBinViewset(ReadOnlyModelViewSet):
+    queryset = WasteBin.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = WasteBinSerializer
 
+
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-
-
-class WasteBinViewset(ModelViewSet):
-    pass
-
-
+    
+# user can request for a bin, approval or actual bin creation is done on the admin
 class WasteBinRequest(ModelViewSet):
     queryset = WasteBinRequest
     serializer_class = RequestWasteBinSerializer
+    
     permission_classes = (IsAuthenticated,)
-    http_method_names = ['get', 'post', 'delete']
+    #methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
+    http_method_names = ['get','post', 'delete'] 
 
 
+# is to request for a bin pickup
 class WasteBinPickupView(ModelViewSet):
     queryset = WastePickUp.objects.all()
     permission_classes = (IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["completed", "pending", "waste_type"]
     serializer_class = WastePickRequestSerializer
+    http_method_names = ['get','post']
+
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+    
 
-
-# from django.http.response import HttpResponse
-# from django.core.mail import send_mail
-# # Create your views here.
-
-# class DashBoardView(APIView):
-#     queryset = CustomUser.objects.all()
-#     permission_classes = (IsAuthenticated,)
-
-#     def get(self, request):
-#         waste_bins = wasteBin.objects.filter(user=request.user)
-#         # a list of bins
-
-#         waste_bin_list = [
-#             {
-#                 'waste_bin': waste_bin
-#             }
-#             for waste_bin in waste_bins.values()
-#         ]
-
-
-#         return Response(
-#             {
-#                 'user': request.user.fullname,
-#                 'total_reward_point': waste_bins[0].reward_points_sum_bin_count(),
-#                 'waste_bins':waste_bin_list,
-#                 'full_bins':waste_bins[0].full_bins(),
-#                 'half_bins':waste_bins[0].half_bins(),
-#                 'other_bin_levels':waste_bins[0].spacious_bins()
-
-#             }
-#         )
-
-#     def post(self, request):
-#         pass
-
-# class WasteBinPickupView(APIView):
-#     queryset = CustomUser.objects.all()
-#     permission_classes = (IsAuthenticated,)
-#     def post(self, request):
-#         serializers = WastePickRequestSerializer(data=request.data)
-
-#         if serializers.is_valid():
-#             waste_type =  wasteCategory.objects.get(name=serializers.data['type_of_waste'])
-#             print(waste_type)
-#             pickup = wastePickUp.objects.create(
-#                 user = request.user,
-#                 type_of_waste = waste_type,
-#                 pending=True
-#             ).save()
-
-#             return Response(
-#                 "Request Successful", status=status.HTTP_201_CREATED
-#             )
-#         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class WasteBinUpdateView(generics.UpdateAPIView):
-#     def partial_update(self, request, *args, **kwargs):
-#         return super().partial_update(request, *args, **kwargs)
-#     pass
-
-# class BinView(APIView):
-#     def get(self, request):
-#         bins = wasteBin.objects.all()
-#         serializer = wasteBinSerializer(bins, many=True)
-#         return Response(serializer.data)
-
-#     def post(self, request):
-#         serializer = wasteBinSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class RequestBinView(generics.GenericAPIView):
-#     permission_classes = [IsAuthenticated]
+# class DashboardParameterView(APIView):
 
 #     def post(self, request, *args, **kwargs):
-#         email = request.data.get('email')
-#         location = request.data.get('location')
-#         # Send an email request for a bin (simplified example)
-#         send_mail(
-#             'Bin Request',
-#             f'User {request.user.username} has requested a bin at {location}.',
-#             'the.ayoadeborah@gmail.com',
-#             [email],
-#         )
-#         return Response({'message': 'Bin request sent successfully.'}, status=status.HTTP_200_OK)
+#         # Accessing query parameters
+#         param1 = request.query_params.get('param1')
+#         param2 = request.query_params.get('param2')
 
-# class wasteBinListView(generics.ListCreateAPIView):
-#     queryset = wasteBin.objects.all()
-#     serializer_class = wasteBinSerializer
-#     permission_classes = [IsAuthenticated]
+#         # Accessing data from the request body
+#         field1 = request.data.get('field1')
+#         field2 = request.data.get('field2')
 
-# class BinDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = wasteBin.objects.all()
-#     serializer_class = wasteBinSerializer
-#     permission_classes = [IsAuthenticated]
+#         # Example logic to use both query params and request body data
+#         if not field1 or not field2:
+#             return Response({'error': 'Field1 and Field2 are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-# class RequestPickupView(generics.GenericAPIView):
-#     permission_classes = [IsAuthenticated]
+#         # You can include logic here that uses both query parameters and request body data
+#         # For instance, saving data to the database or performing other operations
 
-#     def post(self, request, *args, **kwargs):
-#         bin_id = request.data.get('bin_id')
-#         waste_type = request.data.get('type')
-#         bin_instance = wasteBin.objects.get(id=bin_id)
-#         if bin_instance.bin_level < 50:
-#             return Response({'message': 'Cannot pickup at the moment.'}, status=status.HTTP_400_BAD_REQUEST)
-#         # if waste_type == 'recyclable' and bin_instance.recyclable_fill_level < 50:
-#         #     return Response({'message': 'Cannot pickup at the moment.'}, status=status.HTTP_400_BAD_REQUEST)
-#         # if waste_type == 'non_recyclable' and bin_instance.non_recyclable_fill_level < 50:
-#         #     return Response({'message': 'Cannot pickup at the moment.'}, status=status.HTTP_400_BAD_REQUEST)
-#         # Create a WasteHistory entry
-#         wasteHistory.objects.create(
-#             bin=bin_instance,
-#             quantity=0,  # This would be calculated
-#             points=0,  # This would be calculated
-#             status='pending',
-#             type=waste_type,
-#             user=request.user,
-#         )
-#         return Response({'message': 'Pickup request created successfully.'}, status=status.HTTP_201_CREATED)
+#         return Response({
+#             'query_param1': param1,
+#             'query_param2': param2,
+#             'field1': field1,
+#             'field2': field2
+#         }, status=status.HTTP_201_CREATED)
 
-# class MonthlyRewardPointsView(generics.GenericAPIView):
-#     permission_classes = [IsAuthenticated]
+class DashboardParameterViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['get'])
+    def save_data(self, request):
+        serializer = DashboardParameterSerializer(data=request.query_params)
+        if serializer.is_valid():
+            # Perform the save operation
+            data = serializer.validated_data
+            BinCompartment.objects.update_or_create(
+                id=data['id'],
+                defaults={
+                    'reward_points': data['reward_points'],
+                    'battery_level': data['battery_level'],
+                    'charge_status': data['charge_status'],
+                    'power_consumption': data['power_consumption'],
+                    'temperature': data['temperature'],
+                    'weight': data['weight'],
+                    'bin_level': data['bin_level']
+                }
+            )
+            return Response({'status': 'success', 'message': 'Data saved successfully'})
+        else:
+            return Response({'status': 'error', 'message': serializer.errors}, status=400)
+        
+class SaveBinData(APIView):
 
-#     def get(self, request, *args, **kwargs):
-#         user_id = request.user.id
-#         # Logic to calculate reward points for each month (simplified example)
-#         points = wasteHistory.objects.filter(user_id=user_id).values('points')
-#         return Response({'points': points}, status=status.HTTP_200_OK)
+    # this is creating a new bin
 
-# class BinRewardPointsView(generics.GenericAPIView):
-#     permission_classes = [IsAuthenticated]
+    # in actuality it should update the bin
+    serializer_class = WasteBinSerializer
+    def post(self, request, pk):
 
-#     def get(self, request, *args, **kwargs):
-#         bin_id = request.query_params.get('bin_id')
-#         bin_instance = wasteBin.objects.get(id=bin_id)
-#         points = wasteBin.reward_points_sum_bin_count()
-#         return Response({'points': points}, status=status.HTTP_200_OK)
+        waste_bin = get_object_or_404(WasteBin.objects.all(),pk=pk)
+
+        serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
+        if serializer.is_valid():
+            data = serializer.save()
+
+            return Response (serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors)
+
+
+
+def record_sensor_data(request):
+    if request.method == 'GET':
+        bin_id = request.GET.get('bin_id')
+        date = request.GET.get('date')
+        time = request.GET.get('time')
+        waste_height = request.GET.get('waste_height')
+        temperature = request.GET.get('temperature')
+        humidity = request.GET.get('humidity')
+        weight = request.GET.get('weight')
+        batt_value = request.GET.get('batt_value')
+        latitude = request.GET.get('latitude')
+        longitude = request.GET.get('longitude')
+        weather_condition = request.GET.get('weather_condition')
+
+        if all([bin_id, date, time, waste_height, temperature, humidity, weight, batt_value, latitude, longitude, weather_condition]):
+            try:
+                waste_height = float(waste_height)
+                temperature = float(temperature)
+                humidity = float(humidity)
+                weight = float(weight)
+                batt_value = float(batt_value)
+                latitude = float(latitude)
+                longitude = float(longitude)
+                
+                # Save data to the database
+                SensorData.objects.create(
+                    bin_id=bin_id,
+                    date=date,
+                    time=time,
+                    waste_height=waste_height,
+                    temperature=temperature,
+                    humidity=humidity,
+                    weight=weight,
+                    batt_value=batt_value,
+                    latitude=latitude,
+                    longitude=longitude,
+                    weather_condition=weather_condition
+                )
+                
+                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'})
+            
+            except ValueError as e:
+                return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
+        
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
