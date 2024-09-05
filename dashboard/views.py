@@ -159,7 +159,21 @@ def record_sensor_data(request):
                     weather_condition=weather_condition
                 )
                 
-                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'})
+                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.', 
+                                     'Data': {
+                                         'bin_id':bin_id, 
+                                         'date':date, 
+                                         'time':time, 
+                                         'waste_height':waste_height,
+                                         'temperature':temperature, 
+                                         'humidity':humidity,
+                                         'weight':weight,
+                                         'batt_value':batt_value,
+                                         'latitude':latitude,
+                                         'longitude':longitude,
+                                         'weather_condition':weather_condition
+                                         }
+                                         })
             
             except ValueError as e:
                 return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
