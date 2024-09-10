@@ -16,7 +16,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
-from dashboard.sensor_data import SensorData
+from sensor_data import SensorData
 
 
 
