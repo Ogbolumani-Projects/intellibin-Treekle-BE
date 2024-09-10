@@ -23,9 +23,10 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('authservice.urls')),
-    path('api/wastebin/','api/v1/record', include('dashboard.urls')),
+    path('api/wastebin/', include('dashboard.urls')),
     path('administration/', include('administration.urls')),
     path('payments/', include("payments.urls")),
+    path('api/v1/record/', include('dashboard.urls'))
     #path(),
     #path('accounts/', include('dj_rest_auth.urls')),
     
