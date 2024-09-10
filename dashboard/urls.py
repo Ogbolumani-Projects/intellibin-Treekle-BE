@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import *
 from rest_framework.routers import DefaultRouter
-from .views import record_sensor_data
+
 
 router = DefaultRouter()
 router.register("pickups", WasteBinPickupView, basename="wastebin pickup")

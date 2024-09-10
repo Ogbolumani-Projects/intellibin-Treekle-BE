@@ -16,7 +16,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
-from .models import SensorData
+
 
 
 # is for the user to view details about their bins
