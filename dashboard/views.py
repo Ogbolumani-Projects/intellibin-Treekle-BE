@@ -16,7 +16,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
-from .models import SensorData
+from dashboard.sensor_data import SensorData
 
 
 
@@ -153,7 +153,6 @@ def record_sensor_data(request):
                     batt_value=batt_value,
                     latitude=latitude,
                     longitude=longitude,
-                    # weather_condition=weather_condition
                 )
 
                 sensor_data = SensorData.objects.all().values(

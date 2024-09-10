@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class SensorData(models.Model):
     bin_id = models.CharField(max_length=230)
     timestamp = models.DateTimeField(auto_now_add=True)
