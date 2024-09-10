@@ -16,5 +16,5 @@ class SensorData(models.Model):
     weather_condition = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.bin_id} - {self.waste_height} - {self.date} - {self.time} - {self.temperature} - {self.humidity} - {self.weight} - {self.waste_height} - {self.batt_value} - {self.humidity} - {self.longitude} - {self.latitude} - {self.weather_condition} at {self.timestamp}"
+        return f"{self.bin_id} - {self.waste_height} - {self.temperature} - {self.weight} - {self.waste_height} - {self.batt_value} - {self.humidity} - {self.longitude} - {self.latitude} at {self.timestamp}"
     
