@@ -16,6 +16,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from administration.serializers import *
+from .models import SensorData
 
 
 
@@ -145,8 +146,6 @@ def record_sensor_data(request):
                 # Save data to the database
                 SensorData.objects.create(
                     bin_id=bin_id,
-                    # date=date,
-                    # time=time,
                     waste_height=waste_height,
                     temperature=temperature,
                     humidity=humidity,
