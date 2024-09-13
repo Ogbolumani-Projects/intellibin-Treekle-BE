@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import dj_database_url
 
+
+
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
@@ -111,7 +113,8 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASS'),
-        'HOST': env('HOST')
+        'HOST': env('HOST'),
+        'PORT': env('DB_PORT')
     }
 }
 
