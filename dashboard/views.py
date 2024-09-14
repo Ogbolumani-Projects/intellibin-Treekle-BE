@@ -19,6 +19,7 @@ from administration.serializers import *
 from .sensor_data import SensorData
 
 
+
 # is for the user to view details about their bins
 class WasteBinViewset(ReadOnlyModelViewSet):
     queryset = WasteBin.objects.all()
@@ -145,8 +146,8 @@ def record_sensor_data(request):
                 # Save data to the database
                 SensorData.objects.create(
                     bin_id=bin_id,
-                    date=date,
-                    time=time,
+                    # date=date,
+                    # time=time,
                     waste_height=waste_height,
                     temperature=temperature,
                     humidity=humidity,
@@ -154,10 +155,13 @@ def record_sensor_data(request):
                     batt_value=batt_value,
                     latitude=latitude,
                     longitude=longitude,
-                    weather_condition=weather_condition
+                    #weather_condition=weather_condition
                 )
-                
-                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'})
+                sensor_data = SensorData.objects.all().values(
+                    'bin_id', 'waste_height', 'temperature', 'humidity', 
+                    'weight', 'batt_value', 'latitude', 'longitude')
+                data_list = list(sensor_data)                
+                return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'}, data_list, safe=False)
             
             except ValueError as e:
                 return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
