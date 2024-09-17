@@ -47,9 +47,9 @@ class UserLoginAPIView(APIView):
     #so i want a situation whereby the user will not be able to log in unless the otp has been verified
     def post(self, request, *args, **kargs):
         serializer = UserLoginSerializer(data=request.data)
-        verified_user = authenticate(EmailPhoneNumberBackend)
-        if verified_user:
-            if not verified_user.is_verified:
+        verified = authenticate(EmailPhoneNumberBackend)
+        if verified:
+            if not verified.is_verified:
                 return Response({'error': 'User is not verified. Please verify your account.'}, status=status.HTTP_403_FORBIDDEN)
 
         if serializer.is_valid():
