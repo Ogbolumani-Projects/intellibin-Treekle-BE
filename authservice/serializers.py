@@ -31,6 +31,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
             {"password": err.messages})
         return attrs
+    
     def create(self, validated_data):
         
         new_user = CustomUser.objects.create(
@@ -40,6 +41,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         new_user.set_password(validated_data['password'])
         new_user.save()
         return new_user
+    
+    #sending otp to the user
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(

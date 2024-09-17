@@ -39,12 +39,19 @@ class UserRegisterAPIView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         raise ValidationError(
             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
+        #send_otp = send_mail_to_user(serializer.data['email'])
     
 class UserLoginAPIView(APIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserLoginSerializer
+    #so i want a situation whereby the user will not be able to log in unless the otp has been verified
     def post(self, request, *args, **kargs):
         serializer = UserLoginSerializer(data=request.data)
+        verified_user = authenticate(EmailPhoneNumberBackend)
+        if verified_user:
+            if not verified_user.is_verified:
+                return Response({'error': 'User is not verified. Please verify your account.'}, status=status.HTTP_403_FORBIDDEN)
+
         if serializer.is_valid():
             response = {
                 "username": {
@@ -62,6 +69,10 @@ class UserLoginAPIView(APIView):
                 return Response(response, status=status.HTTP_200_OK)
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# class OTPverifyAPIview(APIView):
+#     def post(self, request, *args, **kwargs):
+        
 
 
 @api_view(["POST"])
@@ -108,6 +119,7 @@ def confirm_otp(request):
                 "Otp expired or incorrect"
             )
     return Response(serializer.errors)
+
 
 class UserProfileAPIView(APIView):
     queryset = CustomUser.objects.all()

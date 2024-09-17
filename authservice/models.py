@@ -1,3 +1,4 @@
+from xml.dom import ValidationErr
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, User, AbstractUser
 from django.contrib.auth.password_validation import validate_password
@@ -46,7 +47,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
         max_length= 255,
         unique=True,
         )
-    verified = models.BooleanField(default=False)
+    verified_user = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=255)
     address = models.TextField(max_length=255)
@@ -57,6 +58,12 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+    
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise ValidationErr("That user is already taken")
+        return username
     
 
     def __str__(self):
