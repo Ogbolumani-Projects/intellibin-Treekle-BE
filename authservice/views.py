@@ -11,10 +11,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
 #from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
 from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
-
+#from .serializers.auth import ResendOTPSerializer
 
 # serilaizer
 from .serializers import *
@@ -86,7 +87,10 @@ class OTPVerifyAPIView(APIView):
         else:
             return Response({"detail": "Invalid OTP."}, status=status.HTTP_400_BAD_REQUEST)
 
-
+@extend_schema(
+    request=ResendOTPSerializer,
+    responses=None
+)
 @api_view(["POST"])
 def resend_otp_token(request, *args, **kwargs):
     queryset = CustomUser.objects.all()
@@ -110,6 +114,10 @@ def resend_otp_token(request, *args, **kwargs):
     return Response(serializers.errors)
 
 
+@extend_schema(
+    request=ConfirmOTPSerializer,
+    responses=None
+)
 @api_view(["POST"])
 def confirm_otp(request):
 
@@ -132,7 +140,10 @@ def confirm_otp(request):
             )
     return Response(serializer.errors)
 
-
+@extend_schema(
+    request=None,
+    responses=None
+)
 class UserProfileAPIView(APIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -183,7 +194,11 @@ class PasswordResetConfirmAPIView(PasswordResetConfirmView):
     View for confirming password reset process.
     Inherits from dj_rest_auth's PasswordResetConfirmView.
     """
-    
+
+@extend_schema(
+    request=None,
+    responses=None
+)   
 class LogoutAPIView(LogoutView):
     """
     View for user logout.
