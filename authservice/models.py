@@ -47,7 +47,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
         max_length= 255,
         unique=True,
         )
-    verified = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False) #verified is false until otp is confirmed
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=255)
     address = models.TextField(max_length=255)

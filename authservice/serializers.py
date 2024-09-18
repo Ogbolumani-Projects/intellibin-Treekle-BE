@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate
 from .backends import EmailPhoneNumberBackend
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObtainPairSerializer
 from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer
+from .utils import *
+
 
 import secrets
 import time
@@ -35,14 +37,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         
         new_user = CustomUser.objects.create(
-            email = validated_data['email'], phone_number = validated_data['phone_number'], first_name= validated_data['first_name'], last_name= validated_data['last_name'], address = validated_data['address']
+            email = validated_data['email'], 
+            phone_number = validated_data['phone_number'], 
+            first_name= validated_data['first_name'], 
+            last_name= validated_data['last_name'], 
+            address = validated_data['address'], 
+            verified=False
         )
         new_profile = UserProfile.objects.create(user=new_user)
         new_user.set_password(validated_data['password'])
         new_user.save()
-        return new_user
     
-    #sending otp to the user
+        #sending otp to the user
+        send_otp = send_mail_to_user({new_user.email})
+        return new_user
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(
@@ -65,6 +73,14 @@ class UserLoginSerializer(serializers.Serializer):
             if not user:
                 msg = 'Unable to log in with provided credentials.'
                 raise serializers.ValidationError(msg, code='authorization')
+            
+        #to check if the user is verified or not
+            if not user.verified:
+                raise serializers.ValidationError(
+                    {"detail": "User is not verified, pls verify your account before logging in"}, code = 'authorization'
+        
+                )
+
         attrs['user'] = user
         return attrs
 

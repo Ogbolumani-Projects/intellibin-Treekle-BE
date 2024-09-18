@@ -30,10 +30,9 @@ class UserRegisterAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             
-            send_otp = send_mail_to_user(serializer.data['email'])
-            
             response = {
                 'success': True,
+                'code sent to email for account verification': True,
                 'user': serializer.data,
             }
             return Response(response, status=status.HTTP_200_OK)
@@ -51,13 +50,14 @@ class UserLoginAPIView(APIView):
         if verified:
             if not verified.is_verified:
                 return Response({'error': 'User is not verified. Please verify your account.'}, status=status.HTTP_403_FORBIDDEN)
-
+            
         if serializer.is_valid():
+            user = serializer.validated_data['user']
             response = {
-                "username": {
-                    "detail": "User Does not exist!"
-                }
+                'success': True,
+                'email': user.email,
             }
+
             if CustomUser.objects.filter(username=request.data['email']).exists():
                 user = CustomUser.objects.get(username=request.data['email'])
                 
@@ -69,10 +69,22 @@ class UserLoginAPIView(APIView):
                 return Response(response, status=status.HTTP_200_OK)
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-# class OTPverifyAPIview(APIView):
-#     def post(self, request, *args, **kwargs):
-        
+
+
+class OTPVerifyAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        otp = request.data.get('otp')
+
+        user = get_object_or_404(CustomUser, email=email)
+
+        # Verify OTP (you'll need to implement the logic for OTP validation)
+        if totp.verify(otp):  # Assuming you're using pyotp's TOTP
+            user.verified = True  # Mark user as verified
+            user.save()
+            return Response({"detail": "OTP verified successfully."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Invalid OTP."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
