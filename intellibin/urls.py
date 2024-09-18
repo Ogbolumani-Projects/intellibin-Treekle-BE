@@ -26,9 +26,8 @@ urlpatterns = [
     path('api/v1/wastebin/', include('dashboard.urls')),
     path('administration/', include('administration.urls')),
     path('payments/', include("payments.urls")),
-    path('api/v1/record/', include('dashboard.urls')),
-    #path(),
-    #path('accounts/', include('dj_rest_auth.urls')),
+    #path('api/v1/record/', include('dashboard.urls')),
+    
     
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
