@@ -12,10 +12,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
-#from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from dj_rest_auth.views import ( PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView)
 from dj_rest_auth.urls import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
-#from .serializers.auth import ResendOTPSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # serilaizer
 from .serializers import *
@@ -30,7 +29,7 @@ class UserRegisterAPIView(APIView):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            
+            send_otp = send_mail_to_user(serializer.data['email'])
             response = {
                 'success': True,
                 'code sent to email for account verification': True,
@@ -39,7 +38,7 @@ class UserRegisterAPIView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         raise ValidationError(
             serializer.errors, code=status.HTTP_406_NOT_ACCEPTABLE)
-        #send_otp = send_mail_to_user(serializer.data['email'])
+        
     
 class UserLoginAPIView(APIView):
     queryset = CustomUser.objects.all()
@@ -54,18 +53,24 @@ class UserLoginAPIView(APIView):
             
         if serializer.is_valid():
             user = serializer.validated_data['user']
+            refresh = RefreshToken.for_user(user)
+
             response = {
                 'success': True,
                 'email': user.email,
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
             }
 
-            if CustomUser.objects.filter(username=request.data['email']).exists():
-                user = CustomUser.objects.get(username=request.data['email'])
+            if CustomUser.objects.filter(email=request.data['username']).exists():
+                user = CustomUser.objects.get(email=request.data['username'])
                 
                 response = {
                     'success': True,
                     'username': user.username,
                     'email': user.email,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
                 }
                 return Response(response, status=status.HTTP_200_OK)
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
@@ -106,7 +111,7 @@ def resend_otp_token(request, *args, **kwargs):
                 message=generate_otp()
             )
 
-            return Response(status=status.HTTP_200_OK)
+            return Response({"detail": "Otp has been resent to your email"},status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
 

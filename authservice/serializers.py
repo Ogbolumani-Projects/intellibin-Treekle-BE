@@ -73,9 +73,12 @@ class UserLoginSerializer(serializers.Serializer):
             if not user:
                 msg = 'Unable to log in with provided credentials.'
                 raise serializers.ValidationError(msg, code='authorization')
+            print('user:', user)
+            print('user verify:', user.verified)
             
         #to check if the user is verified or not
             if not user.verified:
+                print('check')
                 raise serializers.ValidationError(
                     {"detail": "User is not verified, pls verify your account before logging in"}, code = 'authorization'
         
