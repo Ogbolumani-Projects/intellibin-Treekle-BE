@@ -9,4 +9,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 python manage.py spectacular --color --file schema.yml
-python manage.py createsuperuser --no-input --email "something@gmail.com"
+#python manage.py createsuperuser --no-input --email "something@gmail.com"

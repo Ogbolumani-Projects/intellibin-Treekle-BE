@@ -9,7 +9,6 @@ from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenObt
 from dj_rest_auth.serializers import PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer
 from .utils import *
 
-
 import secrets
 import time
 import random
@@ -80,13 +79,11 @@ class UserLoginSerializer(serializers.Serializer):
             if not user.verified:
                 print('check')
                 raise serializers.ValidationError(
-                    {"detail": "User is not verified, pls verify your account before logging in"}, code = 'authorization'
-        
+                    {"detail": "User is not verified, pls verify your account before logging in"}, code = 'authorization'        
                 )
 
         attrs['user'] = user
         return attrs
-
 
 
 class ConfirmOTPSerializer(serializers.Serializer):
@@ -98,8 +95,7 @@ class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class UpdateUserProfileSerializer(serializers.ModelSerializer):
-    
+class UpdateUserProfileSerializer(serializers.ModelSerializer):    
     class Meta:
         model = CustomUser
         fields = "__all__"
@@ -109,7 +105,6 @@ class UpdateUserProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
             {"error": "You cannot update your phone number or email address "})
         return attrs 
-    
 
 
 class ChangePasswordSerializer(serializers.Serializer):

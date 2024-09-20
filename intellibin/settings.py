@@ -107,7 +107,7 @@ DEFAULT_AUTO_FIELD ="django.db.models.BigAutoField"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-#print('DB_PASS', env('DB_PASS'))
+# print('DB_PASS', env('DB_PASS'))
 
 DATABASES = {
     'default': {
