@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-from sensor_data import SensorData
 from django.contrib.auth import get_user_model
 from administration.utils import *
 
