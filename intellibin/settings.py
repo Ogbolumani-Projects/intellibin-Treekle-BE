@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'push_notifications',
     'payments',
     'notification',
+    'django_rest_passwordreset',
+    #'authservice.apps.AuthserviceConfig',
     
 ]
 
@@ -86,7 +88,7 @@ ROOT_URLCONF = 'intellibin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR, 'templates/',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,14 +130,6 @@ DATABASES = {
 # }
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://intellibin_pa05_user:3Ufpf6INO6qd6Dp7YgLv5wVVDFhkV32p@dpg-crhbhdo8fa8c738vbiv0-a/intellibin_pa05',
-#         conn_max_age=600
-#     )
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

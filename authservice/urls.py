@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -15,10 +15,11 @@ urlpatterns = [
     path("resend_otp/", resend_otp_token, name='resend_otp'),
     path("confirm_otp/", confirm_otp, name='confirm_otp'),
     path("user_profile/", UserProfileAPIView.as_view(), name='user_profile'),
-    path('change-password/', PasswordChangeAPIView.as_view(), name='change_password'),
-    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
-    path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('logout/', LogoutAPIView.as_view(), name='logout'),
+    path('change-password/', change_password, name='change_password'),
+    path('password-reset/',include('django_rest_passwordreset.urls', namespace='password_reset'))
+    #path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    #path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+   
     
 ]
 
