@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from sensor_data import SensorData
 from django.contrib.auth import get_user_model
 from administration.utils import *
 
@@ -16,6 +17,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
     temperature = serializers.FloatField(required=False)
     weight = serializers.FloatField(required=False) 
     bin_level  = serializers.FloatField(required=False)
+    humidity = serializers.FloatField(required=False)
 
     class Meta:
         model  = WasteBin
@@ -53,6 +55,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
         instance.location = validated_data.get("location", instance.location)
         instance.latitude = validated_data.get("latitude", instance.latitude)
         instance.longitude = validated_data.get("longitude", instance.longitude)
+        instance.humidity = validated_data.get("humidity", instance.humidity)
         recy =  instance.compartments.filter(type_of_waste="RECYCLABLE")[0]
         recy.weight = validated_data.get("weight", recy.weight)
         update_bin(recy, validated_data)

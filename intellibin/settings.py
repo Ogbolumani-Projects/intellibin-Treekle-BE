@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'push_notifications',
     'payments',
     'notification',
+    'drf_yasg',
     
 ]
 
