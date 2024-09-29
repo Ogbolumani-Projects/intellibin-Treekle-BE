@@ -81,38 +81,38 @@ class DashboardParameterViewSet(viewsets.ViewSet):
             return Response({'status': 'error', 'message': serializer.errors}, status=400)
         
 
-class RetrieveSensorData(APIView):
-    @swagger_auto_schema(
-        manual_parameters=[
-            openapi.Parameter('bin_id', openapi.IN_QUERY, description="Bin ID", type=openapi.TYPE_STRING, required=True),
-            openapi.Parameter('date', openapi.IN_QUERY, description="Date of reading", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE, required=True),
-            # Add other parameters as needed
-        ],
-        responses={
-            200: 'Success',
-            400: 'Bad Request'
-        }
-    )
-    def get(self, request, format=None):
-        bin_id = request.GET.get('bin_id')
-        # date = request.GET.get('date')
-        waste_height = request.GET.get('waste_height')
-        temperature = request.GET.get('temperature')
-        humidity = request.GET.get('humidity')
-        weight = request.GET.get('weight')
-        batt_value = request.GET.get('batt_value')
-        latitude = request.GET.get('latitude')
-        longitude = request.GET.get('longitude')
+# class RetrieveSensorData(APIView):
+#     @swagger_auto_schema(
+#         manual_parameters=[
+#             openapi.Parameter('bin_id', openapi.IN_QUERY, description="Bin ID", type=openapi.TYPE_STRING, required=True),
+#             openapi.Parameter('date', openapi.IN_QUERY, description="Date of reading", type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE, required=True),
+#             # Add other parameters as needed
+#         ],
+#         responses={
+#             200: 'Success',
+#             400: 'Bad Request'
+#         }
+#     )
+#     def get(self, request, format=None):
+#         bin_id = request.GET.get('bin_id')
+#         # date = request.GET.get('date')
+#         waste_height = request.GET.get('waste_height')
+#         temperature = request.GET.get('temperature')
+#         humidity = request.GET.get('humidity')
+#         weight = request.GET.get('weight')
+#         batt_value = request.GET.get('batt_value')
+#         latitude = request.GET.get('latitude')
+#         longitude = request.GET.get('longitude')
 
-        # Retrieve other parameters...
+#         # Retrieve other parameters...
 
-        if not bin_id or not date:
-            return Response({'status': 'error', 'message': 'Missing required parameters.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+#         if not bin_id or not date:
+#             return Response({'status': 'error', 'message': 'Missing required parameters.'},
+#                             status=status.HTTP_400_BAD_REQUEST)
 
-        sensor_data = SensorData.objects.filter(bin_id=bin_id, date=date)
-        data_list = list(sensor_data.values())
-        return Response({'status': 'success', 'data': data_list}, status=status.HTTP_200_OK)
+#         sensor_data = SensorData.objects.filter(bin_id=bin_id, date=date)
+#         data_list = list(sensor_data.values())
+#         return Response({'status': 'success', 'data': data_list}, status=status.HTTP_200_OK)
 
 class RecordSensorData(APIView):
     @swagger_auto_schema(

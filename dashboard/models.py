@@ -108,8 +108,6 @@ class SensorData(models.Model):
     bin_id = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     humidity = models.FloatField()
-    # date = models.DateField(auto_now_add=True)  
-    # time = models.TimeField()
     waste_height = models.FloatField()
     temperature = models.FloatField()
     weight = models.FloatField()
@@ -119,5 +117,5 @@ class SensorData(models.Model):
     # weather_condition = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.bin_id} - {self.timestamp} "
+        return f"{self.bin_id} - {self.timestamp}"
     
