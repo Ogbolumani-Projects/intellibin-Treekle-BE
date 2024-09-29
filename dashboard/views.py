@@ -245,7 +245,7 @@ openapi.Parameter(
                 # weather_condition=weather_condition
             )
 
-            sensor_data = SaveSensorData.objects.all(
+            sensor_data = SaveSensorData.objects.filter(
                     'bin_id', 'waste_height', 'humidity','temperature', 
                     'weight', 'batt_value', 'latitude', 'longitude')
             data_list = list(sensor_data.values())                
