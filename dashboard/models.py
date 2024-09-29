@@ -106,8 +106,8 @@ class WasteBinRequest(BinLocation):
     
 class SaveSensorData(models.Model):
     bin_id = models.CharField(max_length=120)
-    time = models.TimeField(auto_now_add=True, null=True, blank=True)
-    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    time = models.TimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
     humidity = models.FloatField()
     waste_height = models.FloatField()
     temperature = models.FloatField()
