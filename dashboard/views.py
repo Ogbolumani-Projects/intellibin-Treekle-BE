@@ -233,7 +233,7 @@ class RecordSensorData(APIView):
                 return Response({'status': 'error', 'message': message}, status=status.HTTP_400_BAD_REQUEST)
 
             # Create SensorData instance
-            sensor_data = SensorData.objects.create(
+            sensor_data = SaveSensorData.objects.create(
                 bin_id=bin_id,
                 waste_height=waste_height,
                 temperature=temperature,
@@ -246,7 +246,7 @@ class RecordSensorData(APIView):
                 # weather_condition='clear'  # Default or retrieve if provided
             )
 
-            serializer = SensorDataSerializer(sensor_data)
+            serializer = SaveSensorDataSerializer(sensor_data)
 
             logger.info(f"Sensor data recorded: {sensor_data}")
             return Response({
