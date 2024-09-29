@@ -12,7 +12,7 @@ router.register('record-sensor-data', RecordSensorData, basename="record-sensor-
 
 urlpatterns = [
     #path("save_data/<int:pk>/", SaveBinData.as_view(), name='save_bin_data'),
-    path('record/',SaveBinData.as_view() , name='save_sensor_data'),
+    # path('record/',SaveBinData.as_view() , name='save_sensor_data'),
     path('record-sensor-data/', RecordSensorData.as_view(), name='record_sensor_data'),
     # path('get-sensor-data/', get_sensor_data, name='get_sensor_data'),
 ]+router.urls
