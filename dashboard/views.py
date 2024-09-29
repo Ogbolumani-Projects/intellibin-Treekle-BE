@@ -167,8 +167,8 @@ class RecordSensorData(APIView):
                             type=openapi.TYPE_ARRAY,
                             items=openapi.Items(type=openapi.TYPE_OBJECT, properties={
                                 'bin_id': openapi.Schema(type=openapi.TYPE_STRING),
-                                'date': openapi.Schema(type=openapi.TYPE_STRING, format='date'),
-                                'time': openapi.Schema(type=openapi.TYPE_STRING, format='time'),
+                                # 'date': openapi.Schema(type=openapi.TYPE_STRING, format='date'),
+                                # 'time': openapi.Schema(type=openapi.TYPE_STRING, format='time'),
                                 'waste_height': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
                                 'temperature': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
                                 'humidity': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
