@@ -104,11 +104,19 @@ class WasteBinRequest(BinLocation):
     approved = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
     
+class SaveSensorData(models.Model):
+    bin_id = models.CharField(max_length=120)
+    # time = models.TimeField(auto_now_add=True)
+    # date = models.DateField(auto_now_add=True)
+    humidity = models.FloatField()
+    waste_height = models.FloatField()
+    temperature = models.FloatField()
+    weight = models.FloatField()
+    batt_value = models.FloatField()
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    # weather_condition = models.CharField(max_length=255, default="clear")
 
-
-
-
-
-
-
+    def __str__(self):
+        return f"{self.bin_id}"
     
