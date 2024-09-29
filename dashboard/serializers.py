@@ -88,7 +88,7 @@ class SaveDataSerializer(serializers.Serializer):
 
 class SensorDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SaveSensorData
+        model = SensorData
         fields = [
             'bin_id',
             # 'date',

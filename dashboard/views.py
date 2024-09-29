@@ -15,7 +15,7 @@ from drf_yasg import openapi
 from .serializers import *
 from django.http import Http404, JsonResponse
 from .models import *
-from .models import SaveSensorData
+from .models import SensorData
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -233,7 +233,7 @@ class RecordSensorData(APIView):
                 return Response({'status': 'error', 'message': message}, status=status.HTTP_400_BAD_REQUEST)
 
             # Create SensorData instance
-            sensor_data = SaveSensorData.objects.create(
+            sensor_data = SensorData.objects.create(
                 bin_id=bin_id,
                 waste_height=waste_height,
                 temperature=temperature,

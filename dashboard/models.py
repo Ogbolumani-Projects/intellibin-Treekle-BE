@@ -104,7 +104,7 @@ class WasteBinRequest(BinLocation):
     approved = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
     
-class SaveSensorData(models.Model):
+class SensorData(models.Model):
     bin_id = models.CharField(max_length=120)
     # time = models.TimeField(auto_now_add=True)
     # date = models.DateField(auto_now_add=True)
