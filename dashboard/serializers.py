@@ -100,5 +100,5 @@ class SensorDataSerializer(serializers.ModelSerializer):
             'batt_value',
             'latitude',
             'longitude',
-            'weather_condition',
+            # 'weather_condition',
         ]

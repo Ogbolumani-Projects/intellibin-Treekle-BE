@@ -176,7 +176,7 @@ class RecordSensorData(APIView):
                                 'batt_value': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
                                 'latitude': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
                                 'longitude': openapi.Schema(type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT),
-                                'weather_condition': openapi.Schema(type=openapi.TYPE_STRING),
+                                # 'weather_condition': openapi.Schema(type=openapi.TYPE_STRING),
                             })
                         ),
                     }
@@ -243,7 +243,7 @@ class RecordSensorData(APIView):
                 latitude=latitude,
                 longitude=longitude,
                 # 'date' and 'time' are auto-set
-                weather_condition='clear'  # Default or retrieve if provided
+                # weather_condition='clear'  # Default or retrieve if provided
             )
 
             serializer = SensorDataSerializer(sensor_data)
