@@ -117,16 +117,84 @@ class RetrieveSensorData(APIView):
 class RecordSensorData(APIView):
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('bin_id', openapi.IN_QUERY, description="Bin ID", type=openapi.TYPE_STRING, required=True),
-            openapi.Parameter('time', openapi.IN_QUERY, description="Time of reading", type=openapi.TYPE_STRING, format=openapi.FORMAT_TIME, required=True),
-            openapi.Parameter('waste_height', openapi.IN_QUERY, description="Waste height", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('temperature', openapi.IN_QUERY, description="Temperature", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('humidity', openapi.IN_QUERY, description="Humidity", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('weight', openapi.IN_QUERY, description="Weight", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('batt_value', openapi.IN_QUERY, description="Battery value", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('latitude', openapi.IN_QUERY, description="Latitude", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            openapi.Parameter('longitude', openapi.IN_QUERY, description="Longitude", type=openapi.TYPE_NUMBER, format=openapi.FORMAT_FLOAT, required=True),
-            # openapi.Parameter('weather_condition', openapi.IN_QUERY, description="Weather condition", type=openapi.TYPE_STRING, required=True),
+openapi.Parameter(
+                'bin_id',
+                openapi.IN_QUERY,
+                description="Bin ID",
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
+            openapi.Parameter(
+                'time',
+                openapi.IN_QUERY,
+                description="Time of reading",
+                type=openapi.TYPE_STRING,
+                format='time',  
+                required=True
+            ),
+            openapi.Parameter(
+                'waste_height',
+                openapi.IN_QUERY,
+                description="Waste height",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'temperature',
+                openapi.IN_QUERY,
+                description="Temperature",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'humidity',
+                openapi.IN_QUERY,
+                description="Humidity",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'weight',
+                openapi.IN_QUERY,
+                description="Weight",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'batt_value',
+                openapi.IN_QUERY,
+                description="Battery value",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'latitude',
+                openapi.IN_QUERY,
+                description="Latitude",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'longitude',
+                openapi.IN_QUERY,
+                description="Longitude",
+                type=openapi.TYPE_NUMBER,
+                format=openapi.FORMAT_FLOAT,
+                required=True
+            ),
+            openapi.Parameter(
+                'weather_condition',
+                openapi.IN_QUERY,
+                description="Weather condition",
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
         ],
         responses={
             200: openapi.Response('Success', openapi.Schema(
