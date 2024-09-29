@@ -124,14 +124,14 @@ openapi.Parameter(
                 type=openapi.TYPE_STRING,
                 required=True
             ),
-            openapi.Parameter(
-                'time',
-                openapi.IN_QUERY,
-                description="Time of reading",
-                type=openapi.TYPE_STRING,
-                format='time',  
-                required=True
-            ),
+            # openapi.Parameter(
+            #     'time',
+            #     openapi.IN_QUERY,
+            #     description="Time of reading",
+            #     type=openapi.TYPE_STRING,
+            #     format='time',  
+            #     required=True
+            # ),
             openapi.Parameter(
                 'waste_height',
                 openapi.IN_QUERY,
@@ -209,7 +209,7 @@ openapi.Parameter(
     )
     def get(self, request, format=None):
         bin_id = request.GET.get('bin_id')
-        time = request.GET.get('time')
+        # time = request.GET.get('time')
         waste_height = request.GET.get('waste_height')
         temperature = request.GET.get('temperature')
         humidity = request.GET.get('humidity')
@@ -234,7 +234,7 @@ openapi.Parameter(
 
             SensorData.objects.create(
                 bin_id=bin_id,
-                time=time,
+                # time=time,
                 waste_height=waste_height,
                 temperature=temperature,
                 humidity=humidity,

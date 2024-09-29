@@ -106,8 +106,9 @@ class WasteBinRequest(BinLocation):
     
 class SensorData(models.Model):
     bin_id = models.CharField(max_length=100)
-    date = models.DateField(auto_now_add=True)  # Automatically set the date
-    time = models.TimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    # date = models.DateField(auto_now_add=True)  
+    # time = models.TimeField()
     waste_height = models.FloatField()
     temperature = models.FloatField()
     weight = models.FloatField()
@@ -117,5 +118,5 @@ class SensorData(models.Model):
     # weather_condition = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.bin_id} - {self.date} {self.time}"
+        return f"{self.bin_id} - {self.timestamp}"
     
