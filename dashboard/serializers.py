@@ -85,3 +85,20 @@ class DashboardParameterSerializer(serializers.ModelSerializer):
 
 class SaveDataSerializer(serializers.Serializer):
     pass
+
+class SensorDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SaveSensorData
+        fields = [
+            'bin_id',
+            'date',
+            'time',
+            'waste_height',
+            'temperature',
+            'humidity',
+            'weight',
+            'batt_value',
+            'latitude',
+            'longitude',
+            'weather_condition',
+        ]
