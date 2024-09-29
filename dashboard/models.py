@@ -107,7 +107,7 @@ class WasteBinRequest(BinLocation):
 class SensorData(models.Model):
     bin_id = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
-    humidity = models.FloatField()
+    # humidity = models.FloatField()
     waste_height = models.FloatField()
     temperature = models.FloatField()
     weight = models.FloatField()

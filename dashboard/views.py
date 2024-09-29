@@ -148,14 +148,14 @@ openapi.Parameter(
                 format=openapi.FORMAT_FLOAT,
                 required=True
             ),
-            openapi.Parameter(
-                'humidity',
-                openapi.IN_QUERY,
-                description="Humidity",
-                type=openapi.TYPE_NUMBER,
-                format=openapi.FORMAT_FLOAT,
-                required=True
-            ),
+            # openapi.Parameter(
+            #     'humidity',
+            #     openapi.IN_QUERY,
+            #     description="Humidity",
+            #     type=openapi.TYPE_NUMBER,
+            #     format=openapi.FORMAT_FLOAT,
+            #     required=True
+            # ),
             openapi.Parameter(
                 'weight',
                 openapi.IN_QUERY,
@@ -212,21 +212,21 @@ openapi.Parameter(
         # time = request.GET.get('time')
         waste_height = request.GET.get('waste_height')
         temperature = request.GET.get('temperature')
-        humidity = request.GET.get('humidity')
+        # humidity = request.GET.get('humidity')
         weight = request.GET.get('weight')
         batt_value = request.GET.get('batt_value')
         latitude = request.GET.get('latitude')
         longitude = request.GET.get('longitude')
         # weather_condition = request.GET.get('weather_condition')
 
-        if not all([bin_id, waste_height, temperature, humidity, weight, batt_value, latitude, longitude]):
+        if not all([bin_id, waste_height, temperature, weight, batt_value, latitude, longitude]):
             return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'}, status=400)
 
         try:
             # Convert values to appropriate types
             waste_height = float(waste_height)
             temperature = float(temperature)
-            humidity = float(humidity)
+            # humidity = float(humidity)
             weight = float(weight)
             batt_value = float(batt_value)
             latitude = float(latitude)
@@ -237,7 +237,7 @@ openapi.Parameter(
                 # time=time,
                 waste_height=waste_height,
                 temperature=temperature,
-                humidity=humidity,
+                # humidity=humidity,
                 weight=weight,
                 batt_value=batt_value,
                 latitude=latitude,
@@ -246,7 +246,7 @@ openapi.Parameter(
             )
 
             sensor_data = SensorData.objects.filter(
-                    'bin_id', 'waste_height', 'temperature', 'humidity', 
+                    'bin_id', 'waste_height', 'temperature', 
                     'weight', 'batt_value', 'latitude', 'longitude')
             data_list = list(sensor_data.values())                
 
