@@ -219,7 +219,7 @@ openapi.Parameter(
         longitude = request.GET.get('longitude')
         # weather_condition = request.GET.get('weather_condition')
 
-        if not all([bin_id, time, waste_height, temperature, humidity, weight, batt_value, latitude, longitude]):
+        if not all([bin_id, waste_height, temperature, humidity, weight, batt_value, latitude, longitude]):
             return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'}, status=400)
 
         try:
