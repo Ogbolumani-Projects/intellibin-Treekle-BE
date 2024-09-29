@@ -15,7 +15,7 @@ from drf_yasg import openapi
 from .serializers import *
 from django.http import Http404, JsonResponse
 from .models import *
-from .models import SensorData
+from .models import SaveSensorData
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
