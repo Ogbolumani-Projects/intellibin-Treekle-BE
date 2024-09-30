@@ -10,12 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 import environ
 from dotenv import load_dotenv
 load_dotenv()
-import dj_database_url
-
 
 
 # Initialise environment variables
@@ -66,8 +65,8 @@ INSTALLED_APPS = [
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
-    #'authservice.apps.AuthserviceConfig',
-    
+    # 'authservice.apps.AuthserviceConfig',
+
 ]
 
 SITE_ID = 1
