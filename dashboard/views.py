@@ -16,6 +16,7 @@ from .serializers import *
 from django.http import Http404, JsonResponse
 from .models import *
 from .models import SaveSensorData
+from drf_spectacular.utils import extend_schema
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -83,6 +84,7 @@ class DashboardParameterViewSet(viewsets.ViewSet):
         
 
 logger = logging.getLogger(__name__)
+
 
 class RecordSensorData(APIView):
     """
@@ -186,6 +188,12 @@ class RecordSensorData(APIView):
             500: 'Internal Server Error'
         }
     )
+    
+
+    @extend_schema(
+        request=SaveSensorDataSerializer,
+        responses=None
+    )   
     def get(self, request, format=None):
         """
         Handle GET request to record sensor data.
@@ -259,77 +267,4 @@ class RecordSensorData(APIView):
             message = f"An unexpected error occurred: {e}"
             logger.exception(message)
             return Response({'status': 'error', 'message': message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-        
-# class SaveBinData(APIView):
-#     def record_sensor_data(request):
-#         if request.method == 'GET':
-#             bin_id = request.GET.get('bin_id')
-#             waste_height = request.GET.get('waste_height')
-#             temperature = request.GET.get('temperature')
-#             humidity = request.GET.get('humidity')
-#             weight = request.GET.get('weight')
-#             batt_value = request.GET.get('batt_value')
-#             latitude = request.GET.get('latitude')
-#             longitude = request.GET.get('longitude')
-#             # weather_condition = request.GET.get('weather_condition')
-
-#             if all([bin_id, waste_height, temperature, humidity, weight, batt_value, latitude, longitude]):
-#                 try:
-#                     waste_height = float(waste_height)
-#                     temperature = float(temperature)
-#                     humidity = float(humidity)
-#                     weight = float(weight)
-#                     batt_value = float(batt_value)
-#                     latitude = float(latitude)
-#                     longitude = float(longitude)
-                
-#                     # Save data to the database
-#                     SensorData.objects.create(
-#                         bin_id=bin_id,
-#                     # date=date,
-#                     # time=time,
-#                         waste_height=waste_height,
-#                         temperature=temperature,
-#                         humidity=humidity,
-#                         weight=weight,
-#                         batt_value=batt_value,
-#                         latitude=latitude,
-#                         longitude=longitude,
-#                         #weather_condition=weather_condition
-#                     )
-#                     sensor_data = SensorData.objects.all().values(
-#                         'bin_id', 'waste_height', 'temperature', 'humidity', 
-#                         'weight', 'batt_value', 'latitude', 'longitude')
-
-#                     return JsonResponse({'status': 'success', 'message': 'Sensor data recorded successfully.'}, data_list, safe=False)
-            
-#                 except ValueError as e:
-#                     return JsonResponse({'status': 'error', 'message': f'Invalid value: {str(e)}'})
-        
-#             else:
-#                 return JsonResponse({'status': 'error', 'message': 'Missing required parameters.'})
-    
-#         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
-
-    # this is creating a new bin
-
-    # in actuality it should update the bin
-    # serializer_class = WasteBinSerializer
-    # def post(self, request, pk):
-
-    #     waste_bin = get_object_or_404(WasteBin.objects.all(),pk=pk)
-
-    #     serializer = self.serializer_class(waste_bin,data=request.query_params, partial=True)
-    #     if serializer.is_valid():
-    #         data = serializer.save()
-
-    #         return Response (serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors)
-    
-
-
-
-
 
