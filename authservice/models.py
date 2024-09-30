@@ -1,3 +1,4 @@
+from xml.dom import ValidationErr
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, User, AbstractUser
 from django.contrib.auth.password_validation import validate_password
@@ -41,14 +42,16 @@ class CustomManager(BaseUserManager):
 
 class CustomUser(AbstractUser, PermissionsMixin):
     username = None
-    full_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length= 255)
+    last_name = models.CharField(max_length= 255)
+    middle_name = models.CharField(max_length= 255, null=True)
     email = models.EmailField(
         verbose_name="email address",
         max_length=255,
         unique=True,
-    )
-    verified = models.BooleanField(default=False)
-    phone_number = models.CharField(max_length=255)
+        )
+    verified = models.BooleanField(default=False) #verified is false until otp is confirmed
+    phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=255)
     address = models.TextField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -58,6 +61,13 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+    
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise ValidationErr("That user is already taken")
+        return username
+    
 
     def __str__(self):
         return self.email

@@ -14,10 +14,14 @@ from pathlib import Path
 import environ
 from dotenv import load_dotenv
 load_dotenv()
+import dj_database_url
+
+
 
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,7 +64,10 @@ INSTALLED_APPS = [
     'push_notifications',
     'payments',
     'notification',
-
+    'drf_yasg',
+    'django_rest_passwordreset',
+    #'authservice.apps.AuthserviceConfig',
+    
 ]
 
 SITE_ID = 1
@@ -87,7 +94,7 @@ ROOT_URLCONF = 'intellibin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR, 'templates/',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,24 +115,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('HOST')
-#     }
-# }
+# print('DB_PASS', env('DB_PASS'))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('HOST'),
+        'PORT': env('DB_PORT')
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

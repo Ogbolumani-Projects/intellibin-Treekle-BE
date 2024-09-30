@@ -28,11 +28,13 @@ django-environ==0.11.2
 django-filter==24.3
 django-otp==1.5.0
 django-push-notifications==3.1.0
+django-rest-passwordreset==1.4.1
 django-templated-mail==1.1.1
 djangorestframework==3.15.1
 djangorestframework-simplejwt==5.3.1
 djoser==2.2.2
 drf-spectacular==0.27.2
+drf-yasg==1.21.7
 dulwich==0.21.7
 environ==1.0
 environs==11.0.0
@@ -92,6 +94,7 @@ pyparsing==3.1.2
 pyproject_hooks==1.1.0
 python-dotenv==1.0.1
 python3-openid==3.2.0
+pytz==2024.2
 pywebpush==2.0.0
 pywin32-ctypes==0.2.2
 PyYAML==6.0.1
@@ -102,6 +105,7 @@ requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
 rpds-py==0.18.1
 rsa==4.9
+setuptools==75.1.0
 shellingham==1.5.4
 six==1.16.0
 social-auth-app-django==5.4.1
