@@ -25,19 +25,17 @@ from drf_yasg import openapi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('authservice.urls')),
-    path('', include('dashboard.urls')),
-    path('administration/', include('administration.urls')),
 
     # admin urls
-    path('api/admin/', include('administration.api.urls')),
-    path('api/admin/smartbins/', include('administration.api.smart_bin.urls')),
-    path('api/admin/pick-up-request/',
+    path('api/v1/admin/', include('administration.api.urls')),
+    path('api/v1/admin/smartbins/', include('administration.api.smart_bin.urls')),
+    path('api/v1/admin/pick-up-request/',
          include('administration.api.requests.urls')),
 
+    path('api/v1/users/', include('authservice.urls')),
+    path('api/v1/wastebin/', include('dashboard.urls')),
+    path('admin/', include('administration.urls')),
     path('payments/', include("payments.urls")),
-    #path(),
-    # path('accounts/', include('dj_rest_auth.urls')),
 
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
