@@ -32,7 +32,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com', 'intellibin-treekle-be-2rj8.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
+                 'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
 
 # Application definition
 
@@ -59,7 +60,7 @@ INSTALLED_APPS = [
     'push_notifications',
     'payments',
     'notification',
-    
+
 ]
 
 SITE_ID = 1
@@ -216,17 +217,18 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000'
+    'http://localhost:3000'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-        "GCM_API_KEY": "<your api key>",
-        "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+    "GCM_API_KEY": "<your api key>",
+    "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
 }
 
-SOUTH_MIGRATION_MODULES = {"push_notifications": "push_notifications.south_migrations"}
+SOUTH_MIGRATION_MODULES = {
+    "push_notifications": "push_notifications.south_migrations"}
 
 PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
 PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
