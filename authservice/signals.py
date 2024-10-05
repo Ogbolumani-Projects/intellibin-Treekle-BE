@@ -30,14 +30,14 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     }
 
     # render email text
-    email_html_message = render_to_string('authservice\templates\password_reset_email.html', context)
-    email_plaintext_message = render_to_string('authservice\templates\password_reset_email.txt', context)
+    email_html_message = render_to_string('authservice/templates/password_reset_email.html', context)
+    #email_plaintext_message = render_to_string('authservice/templates/password_reset_email.txt', context)
 
     msg = EmailMultiAlternatives(
         # title:
-        "Password Reset for {title}".format(title="Your Website Title"),
+        "Password Reset for {title}".format(title="Intellibin app"),
         # message:
-        email_plaintext_message,
+        email_html_message,
         # from:
         "the.ayoadeborah@gmail.com",
         # to:
