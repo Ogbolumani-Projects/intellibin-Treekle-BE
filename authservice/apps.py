@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from authservice import signals
 
 
 class AuthserviceConfig(AppConfig):
