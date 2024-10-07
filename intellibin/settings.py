@@ -14,6 +14,8 @@ import dj_database_url
 from pathlib import Path
 import environ
 from dotenv import load_dotenv
+from firebase_admin import initialize_app
+
 load_dotenv()
 
 
@@ -60,7 +62,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'corsheaders',
-    'push_notifications',
+    'fcm_django',
     'payments',
     'notification',
     'drf_yasg',
@@ -116,23 +118,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # print('DB_PASS', env('DB_PASS'))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASS'),
-        'HOST': env('HOST'),
-        'PORT': env('DB_PORT')
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASS'),
+#         'HOST': env('HOST'),
+#         'PORT': env('DB_PORT')
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -231,13 +233,14 @@ CORS_ORIGIN_WHITELIST = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-PUSH_NOTIFICATIONS_SETTINGS = {
-    "GCM_API_KEY": "<your api key>",
-    "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+FIREBASE_APP = initialize_app()
+FCM_DJANGO_SETTINGS = {
+    "DEFAULT_FIREBASE_APP": None,
+    "APP_VERBOSE_NAME": "FCM Django",
+    "ONE_DEVICE_PER_USER": True,
+    "DELETE_INACTIVE_DEVICES": False,
+    "UPDATE_ON_DUPLICATE_REG_ID": True
 }
-
-SOUTH_MIGRATION_MODULES = {
-    "push_notifications": "push_notifications.south_migrations"}
 
 PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
 PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
