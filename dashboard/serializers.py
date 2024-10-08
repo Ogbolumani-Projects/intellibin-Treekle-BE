@@ -5,9 +5,11 @@ from administration.utils import *
 
 User = get_user_model()
 
+
 class WasteBinSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), queryset=User.objects.all())
     full_bins = serializers.SerializerMethodField()
     spacious_bins = serializers.SerializerMethodField()
     half_bins = serializers.SerializerMethodField()
@@ -19,7 +21,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
     humidity = serializers.FloatField()
 
     class Meta:
-        model  = WasteBin
+        model = WasteBin
         fields = "__all__"
         extra_fields = ["full_bins", "spacious_bins", "half_bins", "user","temperature","weight"]
         exclude = ()
@@ -64,10 +66,14 @@ class WasteBinSerializer(serializers.ModelSerializer):
         
 class RequestWasteBinSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(default = serializers.CurrentUserDefault(), queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), queryset=User.objects.all())
+
     class Meta:
         model = WasteBinRequest
-        fields = ["user", "location", "latitude", "longitude","date_requested"]
+        fields = ["user", "location", "latitude",
+                  "longitude", "date_requested"]
+
 
 class WastePickRequestSerializer(serializers.ModelSerializer):
 

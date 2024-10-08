@@ -31,18 +31,19 @@ class WasteBinViewset(ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = WasteBinSerializer
 
-
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 # user can request for a bin, approval or actual bin creation is done on the admin
+
+
 class WasteBinRequest(ModelViewSet):
     queryset = WasteBinRequest
     serializer_class = RequestWasteBinSerializer
-    
+
     permission_classes = (IsAuthenticated,)
-    #methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
-    http_method_names = ['get','post', 'delete'] 
+    # methods allowed :  get : user can view all requests, post: create a new bin request, delete: to delete a request
+    http_method_names = ['get', 'post', 'delete']
 
 
 # is to request for a bin pickup
@@ -50,14 +51,13 @@ class WasteBinPickupView(ModelViewSet):
     queryset = WastePickUp.objects.all()
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["completed", "pending", "waste_type"]
+    filterset_fields = ["status", "waste_type"]
     serializer_class = WastePickRequestSerializer
-    http_method_names = ['get','post']
-
+    http_method_names = ['get', 'post']
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 
 class DashboardParameterViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])

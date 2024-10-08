@@ -22,6 +22,7 @@ from .serializers import *
 
 from .utils import *
 
+
 class UserRegisterAPIView(APIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserRegisterSerializer
@@ -68,7 +69,8 @@ class UserLoginAPIView(APIView):
                 
                 response = {
                     'success': True,
-                    'username': user.username,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
                     'email': user.email,
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
@@ -103,7 +105,8 @@ def resend_otp_token(request, *args, **kwargs):
     serializers = ResendOTPSerializer(data=request.data)
 
     if serializers.is_valid():
-        get_user = get_object_or_404(CustomUser, email=serializers.data['email']) # true or false
+        get_user = get_object_or_404(
+            CustomUser, email=serializers.data['email'])  # true or false
         try:
             mail = send_mail(
                 subject="OTP Verification for wastebin",
@@ -116,7 +119,7 @@ def resend_otp_token(request, *args, **kwargs):
         except Exception as e:
             print(e)
 
-            return Response({"failed":f"with error {e}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"failed": f"with error {e}"}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializers.errors)
 
 
@@ -127,18 +130,18 @@ def resend_otp_token(request, *args, **kwargs):
 @api_view(["POST"])
 def confirm_otp(request):
 
-    serializer = ConfirmOTPSerializer(data = request.data)
+    serializer = ConfirmOTPSerializer(data=request.data)
 
     if serializer.is_valid():
 
         confirm_otp_code = totp.verify(serializer.data['otp'])
 
         if confirm_otp_code:
-            verified_user = CustomUser.objects.get(email=serializer.data['email'])
+            verified_user = CustomUser.objects.get(
+                email=serializer.data['email'])
             verified_user.verified = True
             verified_user.save()
 
-    
             return Response("You are now verified")
         else:
             return Response(
@@ -154,24 +157,27 @@ class UserProfileAPIView(APIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
     queryset = CustomUser.objects.all()
+    serializer_class = UpdateUserProfileSerializer
+
     def get(self, request):
-    
+
         user = CustomUser.objects.get(email=request.user.email)
 
         return Response(
             {
-            'email':user.email,
-            'full_name': user.full_name,
-            'phone_number': user.phone_number
+                'email': user.email,
+                'full_name': user.full_name,
+                'phone_number': user.phone_number
             }
         )
-    
-    def put(self,request):
+
+    def put(self, request):
         get_user = CustomUser.objects.get(id=request.user.id)
-        serializers = UpdateUserProfileSerializer(get_user, data= request.data, partial=True)
+        serializers = UpdateUserProfileSerializer(
+            get_user, data=request.data, partial=True)
 
         if serializers.is_valid():
-   
+
             serializers.save()
 
             return Response(

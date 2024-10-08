@@ -119,5 +119,10 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     new_password = serializers.CharField()
 
 
+class CustomUserSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+
 
      
