@@ -19,19 +19,29 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView, LogoutView
 from django.contrib.auth import views as auth_views
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('authservice.urls')),
-    path('api/wastebin/', include('dashboard.urls')),
-    path('administration/', include('administration.urls')),
+
+    # admin urls
+    path('api/v1/admin/', include('administration.api.urls')),
+    path('api/v1/admin/smartbins/', include('administration.api.smart_bin.urls')),
+    path('api/v1/admin/pick-up-request/',
+         include('administration.api.requests.urls')),
+
+    path('api/v1/users/', include('authservice.urls')),
+    path('api/v1/wastebin/', include('dashboard.urls')),
+    path('admin/', include('administration.urls')),
     path('payments/', include("payments.urls")),
-    #path(),
-    #path('accounts/', include('dj_rest_auth.urls')),
-    
+
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/schema/swagger-ui/',
+         SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/',
+         SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
