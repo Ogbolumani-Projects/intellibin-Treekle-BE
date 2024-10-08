@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
-    'fcm-django',
+    'fcm_django',
     #'authservice.apps.AuthserviceConfig',
     
 ]
