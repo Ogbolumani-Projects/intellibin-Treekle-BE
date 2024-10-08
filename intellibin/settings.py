@@ -14,7 +14,8 @@ from pathlib import Path
 import environ
 from dotenv import load_dotenv
 load_dotenv()
-import dj_database_url
+#import dj_database_url
+from firebase_admin import initialize_app
 
 
 
@@ -58,11 +59,12 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'corsheaders',
-    'push_notifications',
+    #'push_notifications',
     'payments',
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
+    'fcm-django',
     #'authservice.apps.AuthserviceConfig',
     
 ]
@@ -236,3 +238,13 @@ SOUTH_MIGRATION_MODULES = {"push_notifications": "push_notifications.south_migra
 
 PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
 PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
+
+FIREBASE_APP = initialize_app()
+FCM_DJANGO_SETTINGS = {
+    "DEFAULT_FIREBASE_APP": None,
+    "APP_VERBOSE_NAME": "FCM Django",
+    "ONE_DEVICE_PER_USER": True,
+    "DELETE_INACTIVE_DEVICES": False,
+    "UPDATE_ON_DUPLICATE_REG_ID": True
+}
+

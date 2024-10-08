@@ -23,6 +23,7 @@ var/
 .installed.cfg
 *.egg
 .eggs/
+service_account.json
 
 # Installer logs
 pip-log.txt
