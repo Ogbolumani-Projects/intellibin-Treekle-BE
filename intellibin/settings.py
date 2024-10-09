@@ -17,9 +17,6 @@ from dotenv import load_dotenv
 from firebase_admin import initialize_app
 
 load_dotenv()
-#import dj_database_url
-from firebase_admin import initialize_app
-
 
 
 # Initialise environment variables
@@ -42,6 +39,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
                  'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
+                 'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
 
 # Application definition
 
@@ -59,6 +58,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.account',
+    'allauth.socialaccount',
     'authservice',
     'dashboard',
     'administration',
@@ -66,10 +67,12 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     #'push_notifications',
+    #'push_notifications',
     'payments',
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
+    'fcm_django',
     'fcm_django',
     #'authservice.apps.AuthserviceConfig',
     
@@ -80,6 +83,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -93,6 +97,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'intellibin.urls'
 
@@ -124,6 +129,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # DATABASES = {
 #     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASS'),
+#         'HOST': env('HOST'),
+#         'PORT': env('DB_PORT')
+#     }
+# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': env('DB_NAME'),
 #         'USER': env('DB_USER'),
@@ -233,6 +253,7 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
+    'http://localhost:3000'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -245,10 +266,6 @@ FCM_DJANGO_SETTINGS = {
     "DELETE_INACTIVE_DEVICES": False,
     "UPDATE_ON_DUPLICATE_REG_ID": True
 }
-
-PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
-PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
-
 FIREBASE_APP = initialize_app()
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": None,
@@ -258,3 +275,5 @@ FCM_DJANGO_SETTINGS = {
     "UPDATE_ON_DUPLICATE_REG_ID": True
 }
 
+PAYSTACK_SECRET_KEY = "sk_test_2e6b81cf091c30a21a9c81219327682c060e8e75"
+PAYSTACK_PUBLIC_KEY = "pk_test_32b142fb2bda61a059a785d7289e1b54cd238aca"
