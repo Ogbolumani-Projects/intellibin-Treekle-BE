@@ -97,8 +97,8 @@ class SaveSensorDataSerializer(serializers.ModelSerializer):
         model = SaveSensorData
         fields = [
             'bin_id',
-            # 'date',
-            # 'time',
+            'date',
+            'time',
             'waste_height',
             'temperature',
             'humidity',
