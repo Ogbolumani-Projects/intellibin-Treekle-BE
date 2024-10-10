@@ -39,8 +39,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
                  'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
-                 'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
 
 # Application definition
 
@@ -58,8 +56,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.account',
-    'allauth.socialaccount',
     'authservice',
     'dashboard',
     'administration',
@@ -67,12 +63,10 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     #'push_notifications',
-    #'push_notifications',
     'payments',
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
-    'fcm_django',
     'fcm_django',
     #'authservice.apps.AuthserviceConfig',
     
@@ -127,38 +121,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # print('DB_PASS', env('DB_PASS'))
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('HOST'),
+        'PORT': env('DB_PORT')
+    }
+}
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('HOST'),
-#         'PORT': env('DB_PORT')
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('HOST'),
-#         'PORT': env('DB_PORT')
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -253,19 +232,10 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
-    'http://localhost:3000'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-FIREBASE_APP = initialize_app()
-FCM_DJANGO_SETTINGS = {
-    "DEFAULT_FIREBASE_APP": None,
-    "APP_VERBOSE_NAME": "FCM Django",
-    "ONE_DEVICE_PER_USER": True,
-    "DELETE_INACTIVE_DEVICES": False,
-    "UPDATE_ON_DUPLICATE_REG_ID": True
-}
 FIREBASE_APP = initialize_app()
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": None,

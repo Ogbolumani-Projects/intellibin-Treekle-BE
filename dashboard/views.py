@@ -17,6 +17,7 @@ from django.http import Http404, JsonResponse
 from .models import *
 from .models import SaveSensorData
 from drf_spectacular.utils import extend_schema
+from notification.send_notification import send_message_to_admin
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -57,7 +58,13 @@ class WasteBinPickupView(ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-
+    
+    # customize post request
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        response = super().create(request, *args, **kwargs)
+        send_message_to_admin("Waste Pickup Request", f"{request.user.full_name()} has requested for a waste pickup")
+        return response
 
 class DashboardParameterViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])
