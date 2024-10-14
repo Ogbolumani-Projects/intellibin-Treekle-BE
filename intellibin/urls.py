@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/v1/admin/smartbins/', include('administration.api.smart_bin.urls')),
     path('api/v1/admin/pick-up-request/',
          include('administration.api.requests.urls')),
+    path('api/v1/admin/analytics/', include('administration.api.analytics.urls')),
 
     path('api/v1/users/', include('authservice.urls')),
     path('api/v1/wastebin/', include('dashboard.urls')),
