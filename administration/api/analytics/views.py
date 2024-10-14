@@ -30,10 +30,12 @@ def user_analytics(request):
     true_activation = WastePickUp.objects.filter(status="Picked up").distinct("user").count()
     two_months_ago = datetime.now(timezone.utc) - timedelta(days=60)
     retention_count = WastePickUp.objects.filter(Q(status="Picked up") & Q(date_picked__gte=two_months_ago)).distinct("user").count()
+    fulfiled_pickups = WastePickUp.objects.filter(status="Picked up").count()
 
     response: dict = {
         "total_signups": total_signups,
         "true_activation": true_activation,
-        "retention_count": retention_count
+        "retention_count": retention_count,
+        "fulfiled_pickups": fulfiled_pickups
     }
     return Response(response)
