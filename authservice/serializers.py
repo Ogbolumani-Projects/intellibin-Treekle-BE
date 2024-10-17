@@ -79,7 +79,7 @@ class UserLoginSerializer(serializers.Serializer):
             if not user.verified:
                 print('check')
                 raise serializers.ValidationError(
-                    {"detail": "User is not verified, pls verify your account before logging in"}, code = 'authorization'        
+                    {"detail": "User is not verified, please verify your account before logging in"}, code = 'authorization'        
                 )
 
         attrs['user'] = user

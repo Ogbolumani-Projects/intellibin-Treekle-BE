@@ -13,5 +13,5 @@ class Notification(models.Model):
     recipient = models.CharField(
         max_length=5, choices=NOTIFICATION_RECIPIENT_CHOICES)
     user = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+        CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")
     date_created = models.DateTimeField(auto_now_add=True)

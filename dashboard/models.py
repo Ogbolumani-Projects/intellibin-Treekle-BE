@@ -69,9 +69,15 @@ class WasteBin(BinLocation):
     @property
     def weight(self):
         return self.compartments.filter(type_of_waste="RECYCLABLE")[0].weight
+    
+    @property
+    def temperature(self):
+        # TODO: FIND OUT WHAT IT'S SUPPOSED TO BE
+        return self.compartments.filter(type_of_waste="RECYCLABLE")[0].temperature
 
     def __str__(self):
-        return f"{self.device_id} - {self.reading} at {self.timestamp}"
+        # return f"{self.device_id} - {self.reading} at {self.timestamp}"
+        return f"{self.user} - {self.id}"
 
 
 waste_pickup_status = [
@@ -103,8 +109,8 @@ class WastePickUp(models.Model):
             self.reward_gained = 10
             self.parent_bin.save()
 
-    def save(self) -> None:
-        super().save()
+    def save(self, *args, **kwargs) -> None:
+        super(WastePickUp, self).save(*args, **kwargs)
         self.gain_reward_points()
 
 

@@ -72,6 +72,9 @@ class CustomUser(AbstractUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class UserProfile(models.Model):
     # every profile must belong one to user

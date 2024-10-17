@@ -39,8 +39,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
                  'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'intellibin-treekle-be.onrender.com',
-                 'intellibin-treekle-be-2rj8.onrender.com', 'intellibin-treekle-be-admin.onrender.com']
 
 # Application definition
 
@@ -118,23 +116,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # print('DB_PASS', env('DB_PASS'))
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('HOST'),
-#         'PORT': env('DB_PORT')
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('HOST'),
+        'PORT': env('DB_PORT')
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

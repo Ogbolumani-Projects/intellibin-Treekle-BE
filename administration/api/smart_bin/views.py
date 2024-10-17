@@ -78,8 +78,8 @@ def deactivate_smart_bin(request, id):
 def create_smart_bin(request):
     try:
         try:
-            request_data = request.GET
-            user_id = int(request_data['user_id'])
+            request_data = request.data
+            user_id = int(request_data['user'])
             user = CustomUser.objects.get(id=user_id)
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -89,20 +89,25 @@ def create_smart_bin(request):
         serializer = WasteBinSerializer(smart_bin, request_data)
 
         if serializer.is_valid():
-            serializer.save()
-
             BinCompartment.objects.create(
                 parent_bin=smart_bin, type_of_waste="RECYCLABLE"
             )
 
             BinCompartment.objects.create(
-                parent_bin=smart_bin, type_of_waste="NON-RECYCLABLE"
+                parent_bin=smart_bin, type_of_waste="NON_RECYCLABLE"
             )
+            
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.errors:
+            print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
         print(e)
+        print("Exception Error")
+        raise e
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

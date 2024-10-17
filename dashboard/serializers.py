@@ -18,7 +18,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
     temperature = serializers.FloatField()
     weight = serializers.FloatField() 
     bin_level  = serializers.FloatField()
-    humidity = serializers.FloatField()
+    # humidity = serializers.FloatField()
 
     class Meta:
         model = WasteBin
@@ -56,7 +56,7 @@ class WasteBinSerializer(serializers.ModelSerializer):
         instance.location = validated_data.get("location", instance.location)
         instance.latitude = validated_data.get("latitude", instance.latitude)
         instance.longitude = validated_data.get("longitude", instance.longitude)
-        instance.humidity = validated_data.get("humidity", instance.humidity)
+        # instance.humidity = validated_data.get("humidity", instance.humidity)
         recy =  instance.compartments.filter(type_of_waste="RECYCLABLE")[0]
         recy.weight = validated_data.get("weight", recy.weight)
         update_bin(recy, validated_data)
