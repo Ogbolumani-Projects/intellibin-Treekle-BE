@@ -56,10 +56,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'dj_rest_auth',
     'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.account',
-    'allauth.socialaccount',
     'authservice',
     'dashboard',
     'administration',
@@ -67,14 +63,11 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     #'push_notifications',
-    #'push_notifications',
     'payments',
     'notification',
     'drf_yasg',
     'django_rest_passwordreset',
     'fcm_django',
-    'fcm_django',
-    #'authservice.apps.AuthserviceConfig',
     
 ]
 
@@ -84,8 +77,6 @@ LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -94,10 +85,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'intellibin.urls'
 
@@ -129,21 +120,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('HOST'),
-#         'PORT': env('DB_PORT')
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': env('DB_NAME'),
 #         'USER': env('DB_USER'),
@@ -253,19 +229,10 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
-    'http://localhost:3000'
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_ALL_ORIGINS = True
 
-FIREBASE_APP = initialize_app()
-FCM_DJANGO_SETTINGS = {
-    "DEFAULT_FIREBASE_APP": None,
-    "APP_VERBOSE_NAME": "FCM Django",
-    "ONE_DEVICE_PER_USER": True,
-    "DELETE_INACTIVE_DEVICES": False,
-    "UPDATE_ON_DUPLICATE_REG_ID": True
-}
 FIREBASE_APP = initialize_app()
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": None,
