@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from django.contrib.auth import get_user_model
 from administration.utils import *
+from notification.send_notification import *
 
 User = get_user_model()
 
