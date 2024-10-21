@@ -10,7 +10,7 @@ from authservice.models import *
 
 # Create your models here.
 class UserWallet(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     currency = models.CharField(max_length=50, default='NGN')
     created_at = models.DateTimeField(default=timezone.now, null=True)
 
@@ -18,7 +18,7 @@ class UserWallet(models.Model):
         return self.user.__str__()
 
 class Payment(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     amount = models.PositiveIntegerField()
     ref = models.CharField(max_length=200)
     email = models.EmailField()
