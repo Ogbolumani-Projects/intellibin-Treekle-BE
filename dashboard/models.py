@@ -1,4 +1,3 @@
-from typing import Iterable
 from django.db import models
 from authservice.models import *
 from django.db.models import Sum, Avg, Count

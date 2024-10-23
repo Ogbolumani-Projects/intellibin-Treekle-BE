@@ -1,7 +1,10 @@
 from django.urls import path
 from .paystack import *
-from .models import *
+from .views import SubscriptionView, PaymentInitializationView, PaymentVerificationView
 
 urlpatterns = [
-   
+    path('subscription/', SubscriptionView.as_view(), name='subscription'),
+    path('payment/initialize/', PaymentInitializationView.as_view(), name='payment_initialize'),
+    path('payment/verify/<str:reference>/', PaymentVerificationView.as_view(), name='payment_verify'),
 ]
+

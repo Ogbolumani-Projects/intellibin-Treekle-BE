@@ -1,14 +1,29 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import secrets
 from .paystack import Paystack
 from authservice.models import *
 
-# Create your models here.
+
+TIER_CHOICES = [
+        ('basic', 'Basic'),
+        ('premium', 'Premium'),
+        ('enterprise', 'Enterprise'),
+    ]
+
+# class SubscriptionTier(models.Model):
+#     name = models.CharField(max_length=100)
+#     price = models.DecimalField(max_digits=10, decimal_places=2)
+#     description = models.TextField()
+
+class Subscription(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    tier = models.CharField(max_length=20, choices= TIER_CHOICES)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField()
+    is_active = models.BooleanField(default=False)
+    
 class UserWallet(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     currency = models.CharField(max_length=50, default='NGN')
@@ -16,11 +31,20 @@ class UserWallet(models.Model):
 
     def __str__(self):
         return self.user.__str__()
+    
+
+class PaymentRecord(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    reference = models.CharField(max_length=100, unique=True)
+    status = models.CharField(max_length=20, choices=[('success', 'Success'), ('failed', 'Failed')])
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Payment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField()
-    ref = models.CharField(max_length=200)
+    payment_method = models.CharField(max_length=50)  # 'reward_points', 'cash', 'card'
+    transaction_id = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, default='pending')
     email = models.EmailField()
     verified = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -39,17 +63,3 @@ class Payment(models.Model):
                 self.ref = ref
 
         super().save(*args, **kwargs)
-
-def amount_value(self):
-        return int(self.amount) * 100
-
-def verify_payment(self):
-    paystack = Paystack()
-    status, result = paystack.verify_payment(self.ref, self.amount)
-    if status:
-        if result['amount'] / 100 == self.amount:
-            self.verified = True
-        self.save()
-    if self.verified:
-        return True
-    return False
