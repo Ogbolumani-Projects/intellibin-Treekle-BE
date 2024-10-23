@@ -13,7 +13,7 @@ def initialize_payment(email, amount):
     }
     data = {
         "email": email,
-        "amount": amount
+        "amount": int(amount) * 100,
     }
     response = requests.post(url, json=data, headers=headers)
     return response.json()
@@ -49,7 +49,7 @@ def verify_payment(reference):
 def charge_card(user, amount, authorization_code):
     payload = {
         'email': user.email,
-        'amount': amount,  # in kobo
+        'amount': int(amount) * 100,  # in kobo
         'authorization_code': authorization_code
     }
     response = requests.post('https://api.paystack.co/transaction/charge_authorization', data=payload, headers={

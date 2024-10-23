@@ -7,9 +7,9 @@ from authservice.models import *
 
 
 TIER_CHOICES = [
-        ('basic', 'Basic'),
-        ('premium', 'Premium'),
-        ('enterprise', 'Enterprise'),
+        ('basic', 'basic'),
+        ('premium', 'premium'),
+        ('enterprise', 'enterprise'),
     ]
 
 # class SubscriptionTier(models.Model):
@@ -37,7 +37,7 @@ class PaymentRecord(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     reference = models.CharField(max_length=100, unique=True)
-    status = models.CharField(max_length=20, choices=[('success', 'Success'), ('failed', 'Failed')])
+    status = models.CharField(max_length=20, choices=[('success', 'success'), ('failed', 'failed')])
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Payment(models.Model):
