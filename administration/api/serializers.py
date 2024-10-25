@@ -11,7 +11,7 @@ class AdminRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("email", "password", "confirm_password",
-                  "first_name", "last_name", "middle_name", "phone_number", "address")
+                  "full_name", "phone_number", "location")
         extra_kwargs = {'password': {'write_only': True},
                         "confirm_password": {'write_only': True}}
 
