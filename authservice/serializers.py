@@ -17,7 +17,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     class Meta:
         model = CustomUser  
-        fields=("email", "password", "confirm_password", "phone_number", "first_name", "last_name","address")
+        fields=("email", "password", "confirm_password", "phone_number", "full_name", "location")
         extra_kwargs = {'password': {'write_only': True}, # key word argument
                         "confirm_password":{'write_only':True}}
         
@@ -38,9 +38,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         new_user = CustomUser.objects.create(
             email = validated_data['email'], 
             phone_number = validated_data['phone_number'], 
-            first_name= validated_data['first_name'], 
-            last_name= validated_data['last_name'], 
-            address = validated_data['address'], 
+            full_name= validated_data['full_name'], 
+            location = validated_data['location'], 
             verified=False
         )
         new_profile = UserProfile.objects.create(user=new_user)
