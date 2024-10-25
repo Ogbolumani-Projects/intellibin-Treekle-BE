@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 import secrets
 from .paystack import Paystack
-from authservice.models import *
+from authservice.models import CustomUser
 
 
 TIER_CHOICES = [

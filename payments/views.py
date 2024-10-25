@@ -1,5 +1,3 @@
-from django.shortcuts import render, redirect
-from .models import Payment, UserWallet, Subscription, PaymentRecord
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +9,8 @@ from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from rest_framework.permissions import IsAuthenticated
 from authservice.models import CustomUser
 from datetime import datetime, timedelta, timezone
+from django.urls import reverse
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
 class SubscriptionView(APIView):
@@ -26,38 +26,32 @@ class SubscriptionView(APIView):
             return Response({'message': 'Subscription tier selected', 'tier': subscription.tier})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PaymentInitializationView(APIView):
-    # authentication_classes = (JWTTokenUserAuthentication,)
-    # permission_classes = (IsAuthenticated,)
     def post(self, request):
         user = request.user
         amount = request.data.get('amount')
         email = user.email
-        payment_response = initialize_payment(email, amount)
-        # user_id = request.user.id
-        # user = CustomUser.objects.get(id= user_id)
-        # PaymentRecord.objects.create(
-        #     user = user,
-        #     amount= amount,
-        #     reference=payment_response['reference'],
-        #     status='success'
-        # )
-        print(payment_response)
-        print(user)
-        print(user.email)
+        callback_url = f"{request.build_absolute_uri(reverse('payment_verify'))}?user_id={user.id}"
+        payment_response = initialize_payment(email, amount, callback_url)
         if payment_response['status']:
             return Response({'authorization_url': payment_response['data']['authorization_url']})
         return Response({'error': 'Payment initialization failed'}, status=status.HTTP_400_BAD_REQUEST)
             
 
 class PaymentVerificationView(APIView):
-    authentication_classes = (JWTTokenUserAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    def get(self, request, reference):
+    authentication_classes = ()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    def get(self, request):
+        reference = request.GET.get('reference', None)
+        user_id = request.GET.get('user_id', None)
+
+        if reference is None or user_id is None:
+            return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+        
         verification_response = verify_payment(reference)
         if verification_response['status']:
             # Save the payment record
-            user_id = request.user.id
             user = CustomUser.objects.get(id= user_id)
             PaymentRecord.objects.create(
                 user = user,

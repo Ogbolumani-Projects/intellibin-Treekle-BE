@@ -5,6 +5,6 @@ from .views import SubscriptionView, PaymentInitializationView, PaymentVerificat
 urlpatterns = [
     path('subscription/', SubscriptionView.as_view(), name='subscription'),
     path('initialize/', PaymentInitializationView.as_view(), name='payment_initialize'),
-    path('transaction/verify/<str:reference>/', PaymentVerificationView.as_view(), name='payment_verify'),
+    path('transaction/verify/', PaymentVerificationView.as_view(), name='payment_verify'),
 ]
 
