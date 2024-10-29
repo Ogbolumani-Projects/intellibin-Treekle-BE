@@ -15,11 +15,14 @@ import random
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
+    full_name = serializers.CharField(write_only=True)
     class Meta:
         model = CustomUser  
-        fields=("email", "password", "confirm_password", "phone_number", "full_name", "location")
+        fields=("email", "full_name", "password", "confirm_password", "phone_number",  "location")
         extra_kwargs = {'password': {'write_only': True}, # key word argument
-                        "confirm_password":{'write_only':True}}
+                        "confirm_password":{'write_only':True},
+                        "full_name":{'write_only':True},
+                        }
         
     def validate(self, attrs):
         if attrs['password'] != attrs['confirm_password']:
@@ -34,11 +37,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return attrs
     
     def create(self, validated_data):
+        first_name, last_name=validated_data['full_name'].split(' ')
         
         new_user = CustomUser.objects.create(
             email = validated_data['email'], 
             phone_number = validated_data['phone_number'], 
-            full_name= validated_data['full_name'], 
+            first_name= first_name,
+            last_name = last_name,
             location = validated_data['location'], 
             verified=False
         )

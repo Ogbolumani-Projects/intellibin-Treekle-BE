@@ -42,7 +42,8 @@ class CustomManager(BaseUserManager):
 
 class CustomUser(AbstractUser, PermissionsMixin):
     username = None
-    full_name = models.CharField(max_length= 255)
+    first_name = models.CharField(max_length= 255, default="")
+    last_name = models.CharField(max_length= 255, default="")
     email = models.EmailField(
         verbose_name="email address",
         max_length=255,
@@ -51,7 +52,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     verified = models.BooleanField(default=False) #verified is false until otp is confirmed
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=255)
-    location = models.TextField(max_length=255)
+    location = models.TextField(max_length=255, default="")
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
