@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=intellibin_api.settings  # Replace 'project_name' with your Django project folder name
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=intellibin_db
+      - DB_USER=intellibin
+      - DB_PASSWORD=password
+
+  db:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=YourStrongPassword
+      - MYSQL_DATABASE=intellibin_db
+      - MYSQL_USER=intellibin
+      - MYSQL_PASSWORD=password
+
+volumes:
+  mysql_data:
