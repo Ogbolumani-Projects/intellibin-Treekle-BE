@@ -5,9 +5,13 @@ sqlparse==0.5.3
 cryptography
 PyMySQL
 paystack
+paystack-python
 celery
 redis
 django 
 djangorestframework 
 mysqlclient 
 python-dotenv
+requests
+django-cors-headers
+environ
