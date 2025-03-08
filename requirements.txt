@@ -19,6 +19,7 @@ djangorestframework_simplejwt==5.4.0
 drf-spectacular
 django-filter
 environ==1.0
+gunicorn
 idna==3.10
 kombu==5.4.2
 mysqlclient==2.2.7

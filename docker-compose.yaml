@@ -19,12 +19,12 @@ services:
       - DB_PASSWORD=intellibin
 
   db:
-    image: mysql:8.0
+    image: postgres:16
     restart: always
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - MYSQL_ROOT_PASSWORD=YourStrongPassword
       - MYSQL_DATABASE=intellibin_db
