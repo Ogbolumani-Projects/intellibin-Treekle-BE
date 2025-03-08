@@ -32,6 +32,8 @@ PyMySQL==1.1.1
 pyproject_hooks==1.2.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+psycopg2
+psycopg2-binary
 redis==5.2.1
 requests==2.32.3
 simplejson==3.19.3
