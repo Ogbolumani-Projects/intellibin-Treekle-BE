@@ -28,7 +28,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://intellibin-treekle-be-2rj8.onrender.com',
+]
 
 
 # Application definition
