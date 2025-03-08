@@ -111,10 +111,8 @@ class WasteDataReceiveView(APIView):
         serializer = WasteDataSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, 
-                            {'message': 'Waste data received successfully',
+            return Response({'message': 'Waste data received successfully',
                              'customer': bin.customer.username,
-                             'data': serializer.data,},
-                            status=status.HTTP_201_CREATED)
+                             'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
