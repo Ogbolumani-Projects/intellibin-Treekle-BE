@@ -97,7 +97,7 @@ class WasteDataReceiveView(APIView):
         bin = get_object_or_404(Bin, bin_id=bin_id)
 
         data = {
-            'bin': bin.id,
+            'bin_id': bin.id,
             'waste_height': waste_height,
             'temperature': temperature,
             'humidity': humidity,
